@@ -3,14 +3,31 @@ uv = "0.13.7"
 
 [env]
 _.python.venv = { path = ".venv", create = false }
-# text-to-cad (the `cad` package, the CAD Viewer behind `mise run view`):
-# no usage stats, and no update checks for a release uv.lock pins anyway.
+# text-to-cad (the `cad` library and `cad-server`, both in uv.lock; the CAD
+# Viewer behind `mise run view`): no usage stats, and no update checks for a
+# release uv.lock pins anyway.
 CAD_TELEMETRY = "0"
 CAD_UPDATE_CHECK = "0"
+# Everything else text-to-cad keeps stays in .cad/ (gitignored), not in ~:
+# the registration of the server in .venv, its saved settings, the `cad`
+# launcher, the document cache and the engine's socket. Its defaults are
+# ~/.local/state/cad, ~/.local/bin, ~/.cache/cad and /run/user/<uid>.
+CAD_STATE_DIR = "{{config_root}}/.cad/state"
+CAD_LAUNCHER_DIR = "{{config_root}}/.cad/bin"
+CAD_CACHE_DIR = "{{config_root}}/.cad/cache"
+CAD_ENGINE_DIR = "{{config_root}}/.cad/engine"
 
 [tasks.setup]
-description = "Install the pinned Python and dependencies"
-run = "uv sync"
+description = "Install the pinned Python and dependencies, and register text-to-cad's server in .cad/"
+run = [
+  "uv sync",
+  # The background server goes by the choice saved in the state folder, not
+  # by CAD_TELEMETRY, and a fresh state folder defaults to sending.
+  "cad telemetry off",
+  # The library only ever starts a registered server; this registers the one
+  # in .venv (and writes .cad/bin/cad). The first `view` starts it.
+  "cad doctor --no-server -y",
+]
 
 [tasks.view]
 description = "Build one part, show it in text-to-cad's CAD Viewer (CAD_VIEWER=yacv for Yet Another CAD Viewer) and export it"

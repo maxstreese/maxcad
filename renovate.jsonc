@@ -59,21 +59,11 @@
   // has neither, so an open PR would sit at its first version.
   "rebaseWhen": "behind-base-branch",
 
-  "customManagers": [
-    {
-      // The library (`cad`, in pyproject.toml) refuses a server of another
-      // release, and the server is installed once per machine from the
-      // README's setup line. This keeps that line at the library's version;
-      // both land in the same PR through the group below. After merging,
-      // run the line once locally.
-      "customType": "regex",
-      "description": "cad-server in the README's setup line",
-      "managerFilePatterns": ["/^README\\.md$/"],
-      "matchStrings": ["--from cad-server==(?<currentValue>[0-9][0-9.]*)"],
-      "depNameTemplate": "cad-server",
-      "datasourceTemplate": "pypi"
-    }
-  ],
+  // text-to-cad's library (`cad`) and server (`cad-server`) are both in
+  // pyproject.toml. The library refuses a server of another release, and
+  // cad-server requires cad at its own release, so uv cannot lock them
+  // apart: a bump of one alone fails `uv lock` in its PR. The group below
+  // puts both in the same PR.
 
   "packageRules": [
     {

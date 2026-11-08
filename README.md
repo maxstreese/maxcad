@@ -23,11 +23,13 @@ mise run build door-handles                          # export every part of a pr
 
 `view` hands the part, with its context geometry, to text-to-cad's local
 server and prints the page's URL. Re-running the part updates the same page.
-The server is set up once per machine, outside this repo
-(`uvx --managed-python --python 3.14 --from cad-server==0.11.1 cad doctor`,
-which also writes the `cad` command); after that a run starts it when it is
-not running, and `cad stop` stops it. In the viewer you can select, measure and annotate; its Quick Edit
-hands the selection to a coding agent as references into the model.
+The server (`cad-server`) is a pinned dependency like the rest, in `.venv`;
+`mise run setup` registers it, and a run starts it when it is not running
+(`cad stop` stops it). Everything text-to-cad keeps lives in `.cad/`, not in
+your home directory (`mise.toml`).
+
+In the viewer you can select, measure and annotate; its Quick Edit hands the
+selection to a coding agent as references into the model.
 
 `CAD_VIEWER=yacv mise run view ...` uses Yet Another CAD Viewer instead
 (`http://localhost:32323`, keep the tab open). `CAD_VIEWER=none` only exports,
