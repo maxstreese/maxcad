@@ -1,4 +1,4 @@
-# cad
+# maxcad
 
 Personal CAD models for 3D printing, written as Python code with
 [build123d](https://github.com/gumyr/build123d) and viewed in

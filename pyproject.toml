@@ -1,5 +1,5 @@
 [project]
-name = "cad"
+name = "maxcad"
 version = "0.1.0"
 description = "Personal CAD and 3D printing models"
 requires-python = ">=3.13,<3.14"
