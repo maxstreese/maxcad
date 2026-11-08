@@ -8,8 +8,15 @@
 // settings only the operator may set are in .github/renovate-global.jsonc;
 // this file is the per-repository part.
 //
-// Every version is pinned exactly (pyproject.toml, .python-version,
-// mise.toml), so each update shows up as a version bump.
+// Every version is pinned exactly (pyproject.toml, mise.toml), so each
+// update shows up as a version bump.
+//
+// Python is pinned once, in requires-python: with no .python-version, uv
+// takes the interpreter from it. A .python-version beside it was a second
+// pin, read by Renovate's pyenv manager from Docker's python tags while
+// requires-python comes from the python-version datasource. The two drifted
+// apart (PR #1, 2026-11-08: requires-python bumped, .python-version not),
+// and uv refuses that combination.
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
 
@@ -90,13 +97,20 @@
       "rangeStrategy": "pin"
     },
     {
-      // The interpreter is pinned twice, requires-python and .python-version,
-      // and uv downloads it from python-build-standalone, whose build of a new
-      // release can lag the release itself. Without a wait, that PR's CI
-      // would fail at `uv sync` until it appears.
+      // uv downloads the interpreter from python-build-standalone, whose
+      // build of a new release can lag the release itself. Without a wait,
+      // that PR's CI would fail at `uv sync` until it appears.
       "description": "New Python releases wait until uv can download them",
       "matchDepNames": ["python"],
       "minimumReleaseAge": "3 days"
+    },
+    {
+      // cadquery-ocp (OpenCascade, under build123d and cad) ships wheels up
+      // to cp314 only (8.0.1.1, 2026-11-08), so a 3.15 bump cannot install.
+      // Patch releases still come. Lift once it ships cp315.
+      "description": "Python stays on 3.14 until OCP has wheels for 3.15",
+      "matchDepNames": ["python"],
+      "allowedVersions": "<3.15"
     }
   ],
 

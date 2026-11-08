@@ -7,7 +7,7 @@ Personal CAD models for 3D printing, written as Python code with
 
 ## Setup
 
-Requires [mise](https://mise.jdx.dev). Python and all packages are pinned (`.python-version`, `uv.lock`).
+Requires [mise](https://mise.jdx.dev). Python and all packages are pinned exactly (`requires-python` in `pyproject.toml`, `uv.lock`).
 
 ```sh
 mise install    # installs the pinned uv
