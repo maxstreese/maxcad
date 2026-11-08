@@ -41,10 +41,15 @@ Then update `params.py`: width / 2 -> `RAIL_INNER_HALF_WIDTH`, slot ->
 
 ## Hardware
 
-- 1x M3x5 set screw, flat point (DIN 913 / ISO 4026), per stopper. It cuts its
-  own thread into the plastic: screw it fully in and out once on the bench
-  before inserting the stopper into the rail. Tighten with a 1.5 mm hex key
-  through the slot, snug only.
+- 1x heat-set insert, CNC Kitchen M3 x 3 short, per stopper. Press it into
+  the 4.0 mm hole in the flat top face with a soldering iron, flush with the
+  face (it must not stand proud: that face rests against the rail's web).
+- 1x M3x5 set screw, flat point (DIN 913 / ISO 4026), per stopper, screwed
+  into the insert from below (through the free hole in the stem). Turn it in
+  until its tip is just below the top face before inserting the stopper into
+  the rail. Tighten with a 1.5 mm hex key through the slot, snug only.
+
+  (A screw cutting its own thread into a 2.5 mm hole did not hold.)
 
 ## Print sheet (suggestion)
 
@@ -56,5 +61,5 @@ no supports needed.
 | Material | PETG (or PLA) |
 | Layer height | 0.2 mm (the height stairs' steps land on 0.2 mm layer lines) |
 | Walls | 4 |
-| Infill | 100 % (the parts are tiny; solid gives the screw thread the most grip) |
+| Infill | 100 % (the parts are tiny; solid gives the insert the most to grip) |
 | Supports | none |

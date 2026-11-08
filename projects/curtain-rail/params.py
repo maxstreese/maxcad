@@ -16,9 +16,14 @@ RAIL_SLOT = 6.0  # opening of the lower (glider) channel
 RAIL_INNER_HALF_WIDTH = 5.3  # ESTIMATE centre to the inside of the side walls
 RAIL_WEB_BOTTOM = 4.9  # ESTIMATE underside of the web (top of the glider channel)
 RAIL_WEB_TOP = 5.9  # ESTIMATE
-# ESTIMATE inside of the channel's left half, from the straight wall down
-# along the curve to the edge of the slot, as (x, z) points.
-RAIL_CHANNEL_CURVE = [(-5.3, 1.9), (-5.0, 1.65), (-4.7, 1.4), (-4.2, 1.2), (-3.4, 0.95), (-3.0, 0.7)]
+# The channel's rounded bottom: one arc on each side, from the bottom of the
+# straight side wall down to the edge of the slot, meeting the wall at an
+# angle (about 52 degrees off vertical), not tangentially. Fitted to points
+# traced from the drawing (2026-11-08): a single arc of radius 7.2 fits them
+# to 0.05 mm rms, about one pixel; an arc tangent to the wall fits 3x worse.
+RAIL_CHANNEL_WALL_BOTTOM = 1.9  # ESTIMATE where the straight side wall ends
+RAIL_LIP_TOP = 0.7  # ESTIMATE top of the lips at the slot edge
+RAIL_CHANNEL_RADIUS = 7.2  # ESTIMATE radius of the rounded bottom
 # ESTIMATE outside of the left lower corner, as (x, z) points (preview only).
 RAIL_OUTER_CURVE = [(-6.5, 1.9), (-6.35, 1.4), (-6.1, 0.94), (-5.8, 0.7), (-5.5, 0.47), (-5.1, 0.24), (-4.6, 0.0)]
 
@@ -28,7 +33,16 @@ FIT_SLOT = 0.4  # clearance per side between stem and the 6 mm slot; keep > FIT_
 #   stem meets the slider's flat bottom, not its curve (the slider does the locating)
 
 # --- Hardware --------------------------------------------------------------
-M3_TAP_DRILL = 2.5  # hole the M3 set screw cuts its own thread into
+# The set screw runs in a heat-set insert: CNC Kitchen M3 x 3 short. A thread
+# cut by the screw itself into the plastic did not hold. Dimensions from CNC
+# Kitchen's table for this insert: hole 4.0, minimum wall 1.6, length 3.0,
+# outer diameter 4.6.
+INSERT_HOLE = 4.0  # hole diameter for the insert
+INSERT_LENGTH = 3.0
+INSERT_DIAMETER = 4.6  # outer diameter (preview only)
+INSERT_MIN_WALL = 1.6  # minimum plastic around the insert
+INSERT_HOLE_EXTRA = 0.5  # hole deeper than the insert: room for displaced plastic
+M3_CLEARANCE = 3.4  # free hole for the set screw below the insert
 
 # --- Space at the rail end ------------------------------------------------
 # The gap between the rail's end and the wall is about 15 mm. Every part goes
