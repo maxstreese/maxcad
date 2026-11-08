@@ -17,7 +17,7 @@ CAD_VIEWER picks the viewer:
   every rebuild. The printable files are written from that same build.
 - `yacv`: Yet Another CAD Viewer at http://localhost:32323, from a plain
   `build()` without the server.
-- `none`: only export, from a plain `build()` (the `mise run build` task and
+- `none`: only export, from a plain `build()` (`just build` and
   CI do this, so neither needs a server).
 """
 

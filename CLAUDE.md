@@ -13,17 +13,17 @@ disagree:
 - **Never install text-to-cad**: no `install.sh`, `cad setup`, `uvx … cad-server`, plugin, or
   anything under `~/.local/bin`, `~/.local/state/cad` or `~/.cache/cad`. The library, server and
   MCP server (`cad`, `cad-server`, `cad-mcp`) are pinned in `pyproject.toml`; if the server is not
-  registered, run `mise run setup`.
+  registered, run `just setup`.
 - **The `cad` command is `uv run cad …`** (`uv run cad status`, `uv run cad model snapshot <id>
-  out.png`, …), from the repo, where mise sets `CAD_STATE_DIR`, `CAD_CACHE_DIR`,
-  `CAD_ENGINE_DIR` and `CAD_LAUNCHER_DIR` to `.cad/`. In a shell without mise's hook, prefix
-  `mise exec --`.
-- **Build and show a part with `mise run view projects/<name>/<part>.py`.** It prints each
+  out.png`, …), in the flake's dev shell, which sets `CAD_STATE_DIR`, `CAD_CACHE_DIR`,
+  `CAD_ENGINE_DIR` and `CAD_LAUNCHER_DIR` to `.cad/` and provides Python, uv and the libraries
+  the wheels need. In a shell outside it (no direnv), prefix `nix develop --command`.
+- **Build and show a part with `just view projects/<name>/<part>.py`.** It prints each
   model's page (`view <model>: <url>`) and writes the printable files to `out/<name>/`.
   `uv run cad run <script>` works too, as the skill's `cad run`.
 - **The MCP server is `cad`** (`.mcp.json`): `cad_show`, `cad_inspect`, `cad_snapshot`,
   `cad_export`, against the repo's own server.
-- **Telemetry and update checks stay off** (`mise.toml`, and the choice saved in `.cad/`).
+- **Telemetry and update checks stay off** (`flake.nix`, and the choice saved in `.cad/`).
 
 ## How a part script is written
 
@@ -36,7 +36,7 @@ disagree:
   `out/<project>/<part>.{step,3mf,stl}`, the 3MF/STL in print orientation.
 - No kernel objects at module level (a `Location`, `Color`, shape): numbers there, kernel objects
   inside functions, so a replayed run does not load the kernel.
-- `mise run build <project>` builds without the server (`CAD_VIEWER=none`), as CI does.
+- `just build <project>` builds without the server (`CAD_VIEWER=none`), as CI does.
 
 ## Skills
 

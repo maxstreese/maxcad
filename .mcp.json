@@ -1,8 +1,8 @@
 {
   "mcpServers": {
     "cad": {
-      "command": "mise",
-      "args": ["exec", "--", "uv", "run", "cad-mcp"]
+      "command": "nix",
+      "args": ["develop", "--quiet", "--command", "uv", "run", "cad-mcp"]
     }
   }
 }

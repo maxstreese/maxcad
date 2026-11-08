@@ -1,5 +1,12 @@
-# What CI runs: the pinned toolchain installs, uv.lock installs exactly, and
-# every part of every project builds and exports.
+# What CI runs, which is `just ci` in the flake's dev shell: the Renovate
+# configs and workflows lint, uv.lock installs exactly, the vendored agent
+# skills match their release, and every part of every project builds and
+# exports.
+#
+# Everything the repo knows about checking itself lives in the justfile and
+# the flake; this file only gets a machine into a state where that command
+# can run. If a second check seems to belong here, it probably belongs in
+# `just ci` instead.
 #
 # What this cannot cover: whether a part still fits. Renovate PRs are read by
 # a human for that (renovate.jsonc: no automerge).
@@ -19,41 +26,18 @@ permissions:
   contents: read
 
 jobs:
-  build:
+  ci:
     runs-on: ubuntu-latest
     timeout-minutes: 30
-    env:
-      # mise itself, pinned like everything else and kept current by Renovate
-      # (customManagers:githubActionsVersions). Its tags carry a `v`; the
-      # action wants the bare version.
-      # renovate: datasource=github-releases depName=jdx/mise extractVersion=^v(?<version>.+)$
-      MISE_VERSION: 2026.11.4
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
-      # Installs the uv pinned in mise.toml and puts mise.toml's [env] in
-      # place for the steps after (text-to-cad's telemetry off among it).
-      - uses: jdx/mise-action@b44d12e7d0d8ee7461bb893e1b1993500433185b # v5.2.7
+      # Pinning the action's SHA pins the installer script, not the Nix it
+      # installs; install_url does that, the same Nix as maxi-me's CI.
+      - uses: cachix/install-nix-action@75c75c31ebece974e48ebc36b4ad125bd97bd97b # 31.11.3
         with:
-          version: ${{ env.MISE_VERSION }}
+          install_url: https://releases.nixos.org/nix/nix-2.34.8/install
+          extra_nix_config: |
+            experimental-features = nix-command flakes
 
-      # OpenCascade's binding (cadquery-ocp) links libGL.so.1 even in its
-      # -novtk wheel and fails at import without it; the runner image does
-      # not ship it.
-      - run: sudo apt-get update && sudo apt-get install -y --no-install-recommends libgl1
-
-      # --locked: a pyproject.toml change that left uv.lock behind fails here
-      # instead of being relocked silently. Also installs the pinned Python.
-      - run: uv sync --locked
-
-      # The vendored agent skills match the text-to-cad release uv.lock pins,
-      # and nobody edited them (scripts/sync_skills.py).
-      - run: uv run scripts/sync_skills.py --check
-
-      # Every project under projects/, so a new one is checked without
-      # anyone remembering to add it here.
-      - name: Build every project
-        run: |
-          for dir in projects/*/; do
-            mise run build "$(basename "$dir")"
-          done
+      - run: nix develop --command just ci
