@@ -43,3 +43,7 @@ description = "Export every part of a project (STEP, 3MF, STL) to out/<project>/
 usage = 'arg "<project>" help="Project folder name, e.g. door-handles"'
 env = { CAD_VIEWER = "none" }
 run = 'for f in projects/${usage_project}/*.py; do case "$(basename $f)" in params.py|context.py) ;; *) uv run python "$f";; esac; done'
+
+[tasks.skills]
+description = "Copy text-to-cad's agent skills of the release uv.lock pins into .claude/skills/"
+run = "uv run scripts/sync_skills.py"

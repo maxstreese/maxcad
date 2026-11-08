@@ -5,6 +5,7 @@ description = "Personal CAD and 3D printing models"
 requires-python = "==3.14.10"
 dependencies = [
     "build123d==0.13.0",
+    "cad-mcp==0.11.1",
     "cad-server==0.11.1",
     "cad[build123d]==0.11.1",
     "yacv-server==0.12.2",

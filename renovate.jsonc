@@ -59,11 +59,11 @@
   // has neither, so an open PR would sit at its first version.
   "rebaseWhen": "behind-base-branch",
 
-  // text-to-cad's library (`cad`) and server (`cad-server`) are both in
-  // pyproject.toml. The library refuses a server of another release, and
-  // cad-server requires cad at its own release, so uv cannot lock them
-  // apart: a bump of one alone fails `uv lock` in its PR. The group below
-  // puts both in the same PR.
+  // text-to-cad's library (`cad`), server (`cad-server`) and MCP server
+  // (`cad-mcp`) are all in pyproject.toml, released together. cad-server
+  // requires cad at its own release, so uv cannot lock those two apart;
+  // cad-mcp declares nothing, and scripts/sync_skills.py (in CI) fails while
+  // any of the three differs. The group below puts them in the same PR.
 
   "packageRules": [
     {
@@ -85,6 +85,21 @@
       "description": "pyproject pins stay exact",
       "matchManagers": ["pep621"],
       "rangeStrategy": "pin"
+    },
+    {
+      // The agent skills in .claude/skills/ are copied from the release `cad`
+      // is locked at; CI fails while they lag behind it. This copies the new
+      // release's into the same PR. `update` mode, so it runs for this update
+      // even inside the grouped PR. Allow-listed exactly in
+      // .github/renovate-global.jsonc.
+      "description": "Sync the vendored text-to-cad skills after a cad bump",
+      "matchPackageNames": ["cad"],
+      "postUpgradeTasks": {
+        "commands": ["uv run scripts/sync_skills.py"],
+        "fileFilters": [".claude/skills/**"],
+        "installTools": { "uv": {} },
+        "executionMode": "update"
+      }
     },
     {
       // uv downloads the interpreter from python-build-standalone, whose

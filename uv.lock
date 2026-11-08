@@ -89,6 +89,15 @@ build123d = [
 ]
 
 [[package]]
+name = "cad-mcp"
+version = "0.11.1"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/27/c1/4218633f8e261df511979992d7060b73b2a3234c4b81ad8c2b9e0645e33a/cad_mcp-0.11.1.tar.gz", hash = "sha256:3caa5779b4699685a52a30cd01c4d42537541d18f0d48a6ef0a77db487753f73", size = 25153, upload-time = "2026-11-08T01:20:52.028Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/35/6e/8a902e7e110c5e0b56479fff7cf520389500cec55afb7fe9bb4f52babe28/cad_mcp-0.11.1-py3-none-any.whl", hash = "sha256:06f87f5656cff3186371e262352d4c8057b22c37aaf9f9fb089e734f95c016cb", size = 27926, upload-time = "2026-11-08T01:20:50.812Z" },
+]
+
+[[package]]
 name = "cad-server"
 version = "0.11.1"
 source = { registry = "https://pypi.org/simple" }
@@ -533,6 +542,7 @@ source = { editable = "." }
 dependencies = [
     { name = "build123d" },
     { name = "cad", extra = ["build123d"] },
+    { name = "cad-mcp" },
     { name = "cad-server" },
     { name = "yacv-server" },
 ]
@@ -541,6 +551,7 @@ dependencies = [
 requires-dist = [
     { name = "build123d", specifier = "==0.13.0" },
     { name = "cad", extras = ["build123d"], specifier = "==0.11.1" },
+    { name = "cad-mcp", specifier = "==0.11.1" },
     { name = "cad-server", specifier = "==0.11.1" },
     { name = "yacv-server", specifier = "==0.12.2" },
 ]

@@ -44,6 +44,16 @@ which prints the pages and writes the printable files.
 as `build` does. Usage stats and update checks of text-to-cad are off for
 this repo (`mise.toml`).
 
+### With a coding agent
+
+The repo carries what text-to-cad's Claude Code plugin would bring, without
+installing anything per user: its MCP server (`cad-mcp`, pinned in
+`pyproject.toml`, started by `.mcp.json` through mise so it finds `.cad/`) and
+its `cad` and `print3d` skills (copied into `.claude/skills/` from the release
+`uv.lock` pins; `mise run skills` refreshes them, CI checks them, Renovate
+syncs them on a `cad` bump). `CLAUDE.md` says where this repo differs from a
+standard install. Claude Code asks once to approve the `cad` MCP server.
+
 Outputs go to `out/<project>/` (not committed):
 
 - `<part>.step`: exact geometry in use position (open in FreeCAD to measure)

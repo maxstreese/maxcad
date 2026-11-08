@@ -46,6 +46,10 @@ jobs:
       # instead of being relocked silently. Also installs the pinned Python.
       - run: uv sync --locked
 
+      # The vendored agent skills match the text-to-cad release uv.lock pins,
+      # and nobody edited them (scripts/sync_skills.py).
+      - run: uv run scripts/sync_skills.py --check
+
       # Every project under projects/, so a new one is checked without
       # anyone remembering to add it here.
       - name: Build every project

@@ -13,6 +13,7 @@
   "onboarding": false,
   "requireConfig": "required",
 
-  // renovate.jsonc has no postUpgradeTasks, so no command may run.
-  "allowedCommands": []
+  // The postUpgradeTasks in renovate.jsonc, exactly and nothing else. The
+  // anchors make each regex match the whole command.
+  "allowedCommands": ["^uv run scripts/sync_skills\\.py$"]
 }
