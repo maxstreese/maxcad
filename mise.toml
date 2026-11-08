@@ -3,19 +3,23 @@ uv = "0.13"
 
 [env]
 _.python.venv = { path = ".venv", create = false }
+# text-to-cad (the `cad` package, the CAD Viewer behind `mise run view`):
+# no usage stats, and no update checks for a release uv.lock pins anyway.
+CAD_TELEMETRY = "0"
+CAD_UPDATE_CHECK = "0"
 
 [tasks.setup]
 description = "Install the pinned Python and dependencies"
 run = "uv sync"
 
 [tasks.view]
-description = "Build one part, show it in Yet Another CAD Viewer (http://localhost:32323) and export it"
+description = "Build one part, show it in text-to-cad's CAD Viewer (CAD_VIEWER=yacv for Yet Another CAD Viewer) and export it"
 usage = 'arg "<part>" help="Path to a part script, e.g. projects/door-handles/end_stopper.py"'
-env = { YACV_GRACEFUL_SECS_CONNECT = "120" }  # wait up to 2 min for a browser tab
+env = { YACV_GRACEFUL_SECS_CONNECT = "120" }  # yacv only: wait up to 2 min for a browser tab
 run = "uv run python ${usage_part}"
 
 [tasks.build]
 description = "Export every part of a project (STEP, 3MF, STL) to out/<project>/ without the viewer"
 usage = 'arg "<project>" help="Project folder name, e.g. door-handles"'
-env = { YACV_DISABLE_SERVER = "1" }
+env = { CAD_VIEWER = "none" }
 run = 'for f in projects/${usage_project}/*.py; do case "$(basename $f)" in params.py|context.py) ;; *) uv run python "$f";; esac; done'

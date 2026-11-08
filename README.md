@@ -2,7 +2,8 @@
 
 Personal CAD models for 3D printing, written as Python code with
 [build123d](https://github.com/gumyr/build123d) and viewed in
-[Yet Another CAD Viewer](https://github.com/yeicor-3d/yet-another-cad-viewer).
+[text-to-cad](https://github.com/earthtojake/text-to-cad)'s CAD Viewer (or
+[Yet Another CAD Viewer](https://github.com/yeicor-3d/yet-another-cad-viewer)).
 
 ## Setup
 
@@ -10,7 +11,7 @@ Requires [mise](https://mise.jdx.dev). Python and all packages are pinned (`.pyt
 
 ```sh
 mise install    # installs the pinned uv
-mise run setup  # installs Python 3.13 + dependencies into .venv
+mise run setup  # installs Python 3.14 + dependencies into .venv
 ```
 
 ## Workflow
@@ -20,8 +21,18 @@ mise run view projects/curtain-rail/stopper.py       # show in browser + export
 mise run build door-handles                          # export every part of a project
 ```
 
-`view` prints `http://localhost:32323`. Open it, and keep the tab open: each
-re-run of a part pushes the new version into the same tab.
+`view` hands the part, with its context geometry, to text-to-cad's local
+server and prints the page's URL. Re-running the part updates the same page.
+The server is set up once per machine, outside this repo
+(`uvx --managed-python --python 3.14 --from cad-server==0.11.1 cad doctor`,
+which also writes the `cad` command); after that a run starts it when it is
+not running, and `cad stop` stops it. In the viewer you can select, measure and annotate; its Quick Edit
+hands the selection to a coding agent as references into the model.
+
+`CAD_VIEWER=yacv mise run view ...` uses Yet Another CAD Viewer instead
+(`http://localhost:32323`, keep the tab open). `CAD_VIEWER=none` only exports,
+as `build` does. Usage stats and update checks of text-to-cad are off for
+this repo (`mise.toml`).
 
 Outputs go to `out/<project>/` (not committed):
 
