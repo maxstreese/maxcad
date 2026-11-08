@@ -11,11 +11,19 @@ sticks out, it can be clamped anywhere along the rail.
 
 Coordinates match context.rail(): x across, z up from the rail bottom,
 the stopper is pushed in along +y (the +y end is the tapered nose).
+
+This part is the pilot for text-to-cad models: `build()` is plain build123d,
+and the two `@model` functions are thin wrappers around it that text-to-cad's
+server builds, rebuilds and shows (`stopper`, the printed part, and
+`stopper_in_rail`, the assembly with the rail and the set screw). With
+CAD_VIEWER=none or yacv the script takes the old path through `present`
+instead, so `mise run build` and CI need no server.
 """
 
-from build123d import Location, Part, offset
+from build123d import Compound, Location, Part, offset
+from cad import model
 
-from cadkit import present
+from cadkit import export_printable, present, viewer_choice
 from cadkit.features import box, loft_profiles, vertical_hole
 from context import channel_cavity, rail, screw
 from params import (
@@ -50,20 +58,57 @@ def build(length: float = STOPPER_LENGTH, slide: float = FIT_SLIDE, slot: float 
     return part
 
 
+PREVIEW_INSET = 5.0  # how far the stopper sits inside the rail in the preview
+PREVIEW_RAIL_LENGTH = 60.0
+# Upside down: the flat top on the bed, the rounded bottom facing up (no
+# overhangs), and the screw hole printed vertically for good threads. Numbers,
+# not a Location: a kernel object at module level would load the kernel on
+# every run, a replay included.
+PRINT_ROTATION = (180, 0, 0)
+
+
+def preview_context() -> dict[str, Part]:
+    """What the stopper sits in, for the preview only: the rail and the set screw."""
+    return {
+        "rail": rail(PREVIEW_RAIL_LENGTH).moved(Location((0, -PREVIEW_INSET, 0))),
+        "set_screw_m3x5": screw(
+            0, STOPPER_LENGTH / 2, (RAIL_WEB_BOTTOM - SET_SCREW_LENGTH, RAIL_WEB_BOTTOM), 3.0
+        ),
+    }
+
+
+@model
+def stopper():
+    """The printed part, in its use position."""
+    part = build()
+    part.label = "stopper"
+    return part
+
+
+@model
+def stopper_in_rail():
+    """The stopper clamped in the rail with its set screw: the assembly to look at."""
+    children = [stopper().shape]
+    for label, shape in preview_context().items():
+        shape.label = label
+        children.append(shape)
+    return Compound(children=children, label="stopper_in_rail")
+
+
 if __name__ == "__main__":
-    stopper = build()
-    inset = 5.0  # how far the stopper sits inside the rail in the preview
-    present(
-        "stopper",
-        stopper,
-        project="curtain-rail",
-        # Upside down: the flat top on the bed, the rounded bottom facing up
-        # (no overhangs), and the screw hole printed vertically for good threads.
-        print_orientation=Location((0, 0, 0), (180, 0, 0)),
-        context={
-            "rail": rail(60).moved(Location((0, -inset, 0))),
-            "set_screw_m3x5": screw(
-                0, STOPPER_LENGTH / 2, (RAIL_WEB_BOTTOM - SET_SCREW_LENGTH, RAIL_WEB_BOTTOM), 3.0
-            ),
-        },
-    )
+    print_orientation = Location((0, 0, 0), PRINT_ROTATION)
+    if viewer_choice() == "text-to-cad":
+        # Built and shown by text-to-cad's server (prints id: and view:);
+        # the printable files are written from the same build.
+        stopper_in_rail()
+        export_printable(
+            "stopper", stopper().shape, project="curtain-rail", print_orientation=print_orientation
+        )
+    else:
+        present(
+            "stopper",
+            build(),
+            project="curtain-rail",
+            print_orientation=print_orientation,
+            context=preview_context(),
+        )

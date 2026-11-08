@@ -1,6 +1,6 @@
 """Show a part in a viewer and export it for printing.
 
-Every part script ends with a call to `present`. It
+Most part scripts end with a call to `present`. It
 
 - exports the printable part to out/<project>/<name>.{step,3mf,stl}, with the
   3MF/STL already rotated into the intended print orientation, and
@@ -14,6 +14,10 @@ CAD_VIEWER picks the viewer:
   updates the same page.
 - `yacv`: Yet Another CAD Viewer at http://localhost:32323.
 - `none`: only export (the `mise run build` task does this).
+
+A part written as text-to-cad models (`@model`, the curtain-rail stopper so
+far) is built by text-to-cad's server instead, and calls `export_printable`
+and `viewer_choice` itself; see projects/curtain-rail/stopper.py.
 """
 
 import os
@@ -40,6 +44,33 @@ def present(
     """
     context = context or {}
 
+    export_printable(name, part, project=project, print_orientation=print_orientation)
+
+    viewer = viewer_choice()
+    if viewer == "none":
+        return
+    if viewer == "yacv":
+        _show_yacv(name, part, context)
+    else:
+        _show_text_to_cad(name, part, project, context)
+
+
+def viewer_choice() -> str:
+    """CAD_VIEWER, checked: `text-to-cad` (the default), `yacv` or `none`."""
+    viewer = os.environ.get("CAD_VIEWER", "text-to-cad")
+    if viewer not in ("text-to-cad", "yacv", "none"):
+        raise ValueError(f"CAD_VIEWER={viewer!r}: expected text-to-cad, yacv or none")
+    return viewer
+
+
+def export_printable(
+    name: str, part: Shape, *, project: str, print_orientation: Location = Location()
+) -> None:
+    """Write out/<project>/<name>.{step,3mf,stl} and print the part's size.
+
+    The STEP keeps the part in its use position; the 3MF/STL are turned by
+    `print_orientation`, centred and set on the bed (z = 0).
+    """
     out = OUT_DIR / project
     out.mkdir(parents=True, exist_ok=True)
 
@@ -59,16 +90,6 @@ def present(
         f"{name}: {size.X:.2f} x {size.Y:.2f} x {size.Z:.2f} mm, "
         f"volume {part.volume / 1000:.2f} cm3 -> {out.relative_to(REPO_ROOT)}/"
     )
-
-    viewer = os.environ.get("CAD_VIEWER", "text-to-cad")
-    if viewer == "none":
-        return
-    if viewer == "yacv":
-        _show_yacv(name, part, context)
-    elif viewer == "text-to-cad":
-        _show_text_to_cad(name, part, project, context)
-    else:
-        raise ValueError(f"CAD_VIEWER={viewer!r}: expected text-to-cad, yacv or none")
 
 
 def _show_yacv(name: str, part: Shape, context: dict[str, Shape]) -> None:

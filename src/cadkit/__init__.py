@@ -1,5 +1,5 @@
 """Shared helpers for the part scripts in projects/."""
 
-from cadkit.present import present
+from cadkit.present import export_printable, present, viewer_choice
 
-__all__ = ["present"]
+__all__ = ["export_printable", "present", "viewer_choice"]
