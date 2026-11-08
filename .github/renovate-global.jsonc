@@ -1,0 +1,18 @@
+// Self-hosted Renovate: the settings only the bot's operator may set.
+//
+// Read by .github/workflows/renovate.yml. What this repository decides for
+// itself is in ../renovate.jsonc; this file holds what Renovate refuses to
+// take from a repository, because a repository could otherwise grant itself
+// the power to run any command.
+{
+  "platform": "github",
+  "repositories": ["maxstreese/maxcad"],
+
+  // renovate.jsonc already exists; without a config file Renovate should do
+  // nothing rather than guess.
+  "onboarding": false,
+  "requireConfig": "required",
+
+  // renovate.jsonc has no postUpgradeTasks, so no command may run.
+  "allowedCommands": []
+}

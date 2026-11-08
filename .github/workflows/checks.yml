@@ -1,0 +1,55 @@
+# What CI runs: the pinned toolchain installs, uv.lock installs exactly, and
+# every part of every project builds and exports.
+#
+# What this cannot cover: whether a part still fits. Renovate PRs are read by
+# a human for that (renovate.jsonc: no automerge).
+name: checks
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: checks-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      # mise itself, pinned like everything else and kept current by Renovate
+      # (customManagers:githubActionsVersions). Its tags carry a `v`; the
+      # action wants the bare version.
+      # renovate: datasource=github-releases depName=jdx/mise extractVersion=^v(?<version>.+)$
+      MISE_VERSION: 2026.10.17
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      # Installs the uv pinned in mise.toml and puts mise.toml's [env] in
+      # place for the steps after (text-to-cad's telemetry off among it).
+      - uses: jdx/mise-action@b44d12e7d0d8ee7461bb893e1b1993500433185b # v5.2.7
+        with:
+          version: ${{ env.MISE_VERSION }}
+
+      # OpenCascade's binding (cadquery-ocp) links libGL.so.1 even in its
+      # -novtk wheel and fails at import without it; the runner image does
+      # not ship it.
+      - run: sudo apt-get update && sudo apt-get install -y --no-install-recommends libgl1
+
+      # --locked: a pyproject.toml change that left uv.lock behind fails here
+      # instead of being relocked silently. Also installs the pinned Python.
+      - run: uv sync --locked
+
+      # Every project under projects/, so a new one is checked without
+      # anyone remembering to add it here.
+      - name: Build every project
+        run: |
+          for dir in projects/*/; do
+            mise run build "$(basename "$dir")"
+          done

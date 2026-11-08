@@ -1,0 +1,70 @@
+# Renovate, self-hosted.
+#
+# Runs the Renovate container against this repository as the GitHub App it
+# shares with maxstreese/maxnix and maxstreese/maxi-me. Why self-hosted is in
+# ../../renovate.jsonc; the operator settings are in ../renovate-global.jsonc.
+#
+# An App token rather than GITHUB_TOKEN: workflows on a PR opened with
+# GITHUB_TOKEN wait for a human to approve them, and a push made with it
+# starts none at all. With the App's token, `checks` runs on every Renovate
+# PR. The token is minted per run; only the App's private key is long-lived,
+# in the RENOVATE_APP_PRIVATE_KEY secret.
+name: renovate
+
+on:
+  # Off the full and quarter hours: GitHub delays scheduled runs at the start
+  # of the hour under load and drops some outright. An hour after maxnix's
+  # run (02:17) and half an hour after maxi-me's (02:47), so the three do not
+  # overlap on the App's rate limit.
+  schedule:
+    - cron: '17 3 * * *'
+  # After every push to main, so open PRs are rebuilt on it right away
+  # (renovate.jsonc rebases them once behind) instead of the next night.
+  # Renovate itself never pushes to main, so this does not loop.
+  push:
+    branches: [main]
+  # By hand: gh workflow run renovate.yml -f log-level=debug
+  workflow_dispatch:
+    inputs:
+      log-level:
+        description: Renovate log level
+        type: choice
+        options: [info, debug]
+        default: info
+
+# Two Renovate runs on the same repository would race for the same branches.
+concurrency:
+  group: renovate
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  renovate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      # Not RENOVATE_VERSION: the action hands every RENOVATE_* variable to
+      # the container, where Renovate would read it as a config option.
+      # renovate: datasource=docker depName=ghcr.io/renovatebot/renovate
+      SELF_HOSTED_RENOVATE_VERSION: 44.222.4
+    steps:
+      - uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
+        id: app-token
+        with:
+          client-id: ${{ vars.RENOVATE_APP_CLIENT_ID }}
+          private-key: ${{ secrets.RENOVATE_APP_PRIVATE_KEY }}
+
+      # Only for the global config file; Renovate clones the repository
+      # itself, with the App's token.
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - uses: renovatebot/github-action@1c0cf989c02653fba0efe7ca5772338860ca71dc # v46.3.12
+        with:
+          configurationFile: .github/renovate-global.jsonc
+          token: ${{ steps.app-token.outputs.token }}
+          # The slim image: Renovate installs uv (for uv.lock) on demand.
+          renovate-version: ${{ env.SELF_HOSTED_RENOVATE_VERSION }}
+        env:
+          LOG_LEVEL: ${{ inputs.log-level || 'info' }}
