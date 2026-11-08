@@ -3,9 +3,9 @@
 The body follows the channel's cross-section, including its rounded bottom,
 shrunk by the fit clearance all around. A short stem fills the 6 mm slot up
 to the rail's underside. An M3x5 set screw (flat point) runs in a heat-set
-insert (CNC Kitchen M3 x 3 short), pressed in from the top face, and is
-reached from below through the slot and a free hole in the stem with a
-1.5 mm hex key. Tightening it presses the tip against the underside
+insert (CNC Kitchen M3 x 3 short), pressed in from the top face into a hole
+that runs through the whole part, and is reached from below through the
+slot and that hole with a 1.5 mm hex key. Tightening it presses the tip against the underside
 of the web; the reaction pushes the body down into the rounded bottom of the
 channel, which centres it and clamps it along the whole curve. Since nothing
 sticks out, it can be clamped anywhere along the rail.
@@ -28,9 +28,7 @@ from params import (
     FIT_SLOT,
     INSERT_DIAMETER,
     INSERT_HOLE,
-    INSERT_HOLE_EXTRA,
     INSERT_LENGTH,
-    M3_CLEARANCE,
     RAIL_SLOT,
     RAIL_WEB_BOTTOM,
     SET_SCREW_LENGTH,
@@ -54,14 +52,14 @@ def build(length: float = STOPPER_LENGTH, slide: float = FIT_SLIDE, slot: float 
     stem_half = RAIL_SLOT / 2 - slot
     stem = box((-stem_half, stem_half), (0, nose_start), (slide, 2.0))
 
-    # The insert goes in from the top face (the stem is too narrow for its
-    # walls), a little deeper than it is long; below it a free hole for the
-    # screw through the stem.
-    top = RAIL_WEB_BOTTOM - slide
-    insert_bottom = top - INSERT_LENGTH - INSERT_HOLE_EXTRA
+    # The insert goes in from the top face, where the body is wide enough for
+    # its walls (the stem is not). Its hole runs through the whole part, CNC
+    # Kitchen's through-hole case: the plastic the insert displaces leaves at
+    # the bottom, and the set screw passes through freely. Around the hole the
+    # stem keeps thin walls, but the stem only locates in the slot; the clamping
+    # goes through the curved seat.
     part = body + stem
-    part -= vertical_hole(0, length / 2, (insert_bottom, top + 1), INSERT_HOLE)
-    part -= vertical_hole(0, length / 2, (-1, insert_bottom + 0.1), M3_CLEARANCE)
+    part -= vertical_hole(0, length / 2, (-1, RAIL_WEB_BOTTOM + 1), INSERT_HOLE)
     return part
 
 

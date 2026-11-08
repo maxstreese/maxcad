@@ -34,15 +34,16 @@ FIT_SLOT = 0.4  # clearance per side between stem and the 6 mm slot; keep > FIT_
 
 # --- Hardware --------------------------------------------------------------
 # The set screw runs in a heat-set insert: CNC Kitchen M3 x 3 short. A thread
-# cut by the screw itself into the plastic did not hold. Dimensions from CNC
-# Kitchen's table for this insert: hole 4.0, minimum wall 1.6, length 3.0,
-# outer diameter 4.6.
-INSERT_HOLE = 4.0  # hole diameter for the insert
+# cut by the screw itself into the plastic did not hold. From CNC Kitchen's
+# "Dimensions & Design Guidelines" table (checked 2026-11-08): hole D2 4.0,
+# minimum wall W 1.6, length L 3.0, outer diameter D1 4.6. A blind hole must
+# be at least L + 1 mm deep; a through hole has no minimum, displaced plastic
+# leaves at the far end. The stopper (4.3 mm tall) uses a through hole, which
+# the set screw passes through freely.
+INSERT_HOLE = 4.0  # hole diameter for the insert, through the whole part
 INSERT_LENGTH = 3.0
 INSERT_DIAMETER = 4.6  # outer diameter (preview only)
 INSERT_MIN_WALL = 1.6  # minimum plastic around the insert
-INSERT_HOLE_EXTRA = 0.5  # hole deeper than the insert: room for displaced plastic
-M3_CLEARANCE = 3.4  # free hole for the set screw below the insert
 
 # --- Space at the rail end ------------------------------------------------
 # The gap between the rail's end and the wall is about 15 mm. Every part goes

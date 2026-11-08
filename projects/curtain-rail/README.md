@@ -45,7 +45,7 @@ Then update `params.py`: width / 2 -> `RAIL_INNER_HALF_WIDTH`, slot ->
   the 4.0 mm hole in the flat top face with a soldering iron, flush with the
   face (it must not stand proud: that face rests against the rail's web).
 - 1x M3x5 set screw, flat point (DIN 913 / ISO 4026), per stopper, screwed
-  into the insert from below (through the free hole in the stem). Turn it in
+  into the insert from below (the insert's hole runs through the part). Turn it in
   until its tip is just below the top face before inserting the stopper into
   the rail. Tighten with a 1.5 mm hex key through the slot, snug only.
 
