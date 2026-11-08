@@ -25,7 +25,7 @@ mise run build door-handles                          # export every part of a pr
 server and prints the page's URL. Re-running the part updates the same page.
 The server (`cad-server`) is a pinned dependency like the rest, in `.venv`;
 `mise run setup` registers it, and a run starts it when it is not running
-(`cad stop` stops it). Everything text-to-cad keeps lives in `.cad/`, not in
+(`uv run cad stop` stops it). Everything text-to-cad keeps lives in `.cad/`, not in
 your home directory (`mise.toml`).
 
 In the viewer you can select, measure and annotate; its Quick Edit hands the
