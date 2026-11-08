@@ -11,7 +11,7 @@ with special designed clip loops").
 
 | Part | What it is |
 |---|---|
-| `cover` | The plate: outline from above, flat for 10.11 mm, then bent with R 41 |
+| `cover` | The plate: outline from above, flat for 10.11 mm, then bent with R 41; "Simoncello" engraved 0.4 mm into the flat outer face |
 
 Status: **draft**. The outline and the bend come from a friend's Solid Edge
 sketches of his original (2026-11-08); `params.py` marks every number as

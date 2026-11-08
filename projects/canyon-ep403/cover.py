@@ -4,7 +4,7 @@ the frame's cable port, with a slit to slide it over a hose already in place.
 The outline (plan view) and the bend (flat, then one radius) follow a friend's
 Solid Edge sketches of his original; params.py marks which numbers are his,
 which are read off the photos, and which are placeholders (thickness, screw
-holes).
+holes). "Simoncello" is engraved into the flat outer face.
 
 The 3D part is the bent strip (side view) cut by the outline (plan view),
 which reads his overall length of 37 as the length straight across, as his
@@ -16,6 +16,7 @@ Model: `ep403_cover`. How it is built and shown: src/cadkit/present.py.
 import math
 
 from build123d import (
+    Align,
     Circle,
     Cylinder,
     Face,
@@ -26,6 +27,7 @@ from build123d import (
     Polyline,
     Pos,
     Rot,
+    Text,
     ThreePointArc,
     Vector,
     Wire,
@@ -46,6 +48,9 @@ from params import (
     KEYHOLE_RADIUS,
     KEYHOLE_X,
     LEFT_ARC_RADIUS,
+    LETTERING,
+    LETTERING_DEPTH,
+    LETTERING_SIZE,
     LEFT_STRAIGHT,
     LEFT_X,
     LENGTH,
@@ -190,11 +195,23 @@ def screw_holes() -> Part:
     return holes
 
 
+def lettering() -> Part:
+    """LETTERING, cut LETTERING_DEPTH into the flat outer face (z = THICKNESS):
+    centred across the face, and between the top edge and the keyhole."""
+    left, right = LEFT_X, LEFT_X + 2 * TOP_CORNER_RADIUS + TOP_EDGE
+    keyhole_top = _keyhole_centre()[1] + KEYHOLE_RADIUS
+    text = Text(LETTERING, font_size=LETTERING_SIZE, align=(Align.CENTER, Align.CENTER))
+    # From just above the face down to the engraving's floor.
+    return Pos((left + right) / 2, keyhole_top / 2, THICKNESS - LETTERING_DEPTH) * extrude(
+        text, amount=LETTERING_DEPTH + 1
+    )
+
+
 def build() -> Part:
     # Both ways, so the prism covers the whole bend whichever way the
     # outline's face happens to point.
     plan = extrude(outline(), amount=30, both=True)
-    return (bent_strip() & plan) - screw_holes()
+    return (bent_strip() & plan) - screw_holes() - lettering()
 
 
 @model

@@ -49,3 +49,11 @@ THICKNESS = 2.0  # PLACEHOLDER not in the sketches. His curve is taken as the
 HOLE_DIAMETER = 2.2
 HOLE_FROM_END = 6.0  # distance from the slit end, along y
 HOLE_OFFSET = 5.0  # either side of the slit's centre line, along x
+
+# --- Lettering ----------------------------------------------------------------
+# Engraved into the flat outer face (the visible side, between the top edge
+# and the start of the bend), centred across it and between the top edge and
+# the keyhole, readable from outside with the top edge up.
+LETTERING = "Simoncello"
+LETTERING_SIZE = 3.8  # font size: the word comes out 20.3 x 2.9 mm, 1.6 mm clear of each side
+LETTERING_DEPTH = 0.4  # two 0.2 mm layers
