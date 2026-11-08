@@ -27,7 +27,7 @@ jobs:
       # (customManagers:githubActionsVersions). Its tags carry a `v`; the
       # action wants the bare version.
       # renovate: datasource=github-releases depName=jdx/mise extractVersion=^v(?<version>.+)$
-      MISE_VERSION: 2026.10.17
+      MISE_VERSION: 2026.11.4
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
