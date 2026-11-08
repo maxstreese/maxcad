@@ -9,11 +9,16 @@ drill guide.
 
 Coordinates match context.door_corner(): right edge at x=0 (door at x<0),
 top edge at y=0 (door at y<0), front face at z=0 (door at z<0).
+
+Models: `drill_template` (the printed part) and `drill_template_on_door`
+(on the door's corner, to look at). How they are built and shown:
+src/cadkit/present.py.
 """
 
 from build123d import Axis, GeomType, Location, Part, chamfer
+from cad import model
 
-from cadkit import present
+from cadkit import present_model, with_context
 from cadkit.features import box, vertical_hole
 from context import door_corner
 from params import (
@@ -67,13 +72,40 @@ def build() -> Part:
     return part
 
 
+# Upside down: the flat top face goes on the bed, fences point up. Numbers,
+# not a Location: a kernel object at module level would load the kernel on
+# every run, a replay included.
+PRINT_ROTATION = (180, 0, 0)
+PREVIEW_DOOR_WIDTH = 120.0
+PREVIEW_DOOR_HEIGHT = HANDLE_TOP_OFFSET + HANDLE_SPACING + 80
+
+
+def preview_context() -> dict[str, Part]:
+    """The door's top right corner, for the preview only."""
+    return {"door": door_corner(PREVIEW_DOOR_WIDTH, PREVIEW_DOOR_HEIGHT)}
+
+
+@model
+def drill_template():
+    """The printed part, in its use position."""
+    part = build()
+    part.label = "drill_template"
+    return part
+
+
+@model
+def drill_template_on_door():
+    """The template hooked over the door's corner: the assembly to look at."""
+    return with_context("drill_template_on_door", drill_template().shape, preview_context())
+
+
 if __name__ == "__main__":
-    template = build()
-    present(
+    present_model(
         "drill_template",
-        template,
         project="door-handles",
-        # Upside down: the flat top face goes on the bed, fences point up.
-        print_orientation=Location((0, 0, 0), (180, 0, 0)),
-        context={"door": door_corner(120, HANDLE_TOP_OFFSET + HANDLE_SPACING + 80)},
+        part=drill_template,
+        build=build,
+        assembly=drill_template_on_door,
+        context=preview_context,
+        print_orientation=Location((0, 0, 0), PRINT_ROTATION),
     )

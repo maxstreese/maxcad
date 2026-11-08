@@ -19,8 +19,10 @@ from params import (
     RAIL_WIDTH,
 )
 
-ALUMINIUM = Color(0.75, 0.77, 0.80, 0.45)
-STEEL = Color(0.25, 0.25, 0.28)
+# RGB(A) as numbers: a Color at module level would load the kernel on every
+# run of a model script, a replay included.
+ALUMINIUM = (0.75, 0.77, 0.80, 0.45)
+STEEL = (0.25, 0.25, 0.28)
 
 
 def _line(a: tuple[float, float], b: tuple[float, float]) -> Edge:
@@ -72,11 +74,11 @@ def rail(length: float) -> Part:
         + box((half - 3.0, RAIL_INNER_HALF_WIDTH), y, (RAIL_HEIGHT_RIGHT - 1, RAIL_HEIGHT_RIGHT))
     )
     r = lower + upper
-    r.color = ALUMINIUM
+    r.color = Color(*ALUMINIUM)
     return r
 
 
 def screw(x: float, y: float, z: tuple[float, float], diameter: float) -> Part:
     s = vertical_hole(x, y, z, diameter)
-    s.color = STEEL
+    s.color = Color(*STEEL)
     return s

@@ -31,12 +31,13 @@ your home directory (`mise.toml`).
 In the viewer you can select, measure and annotate; its Quick Edit hands the
 selection to a coding agent as references into the model.
 
-`projects/curtain-rail/stopper.py` is the pilot for writing parts as
-text-to-cad models: its geometry stays a plain build123d function, wrapped by
-`@model` functions that the server builds itself. A re-run then rebuilds only
-what an edit changed, the page follows each rebuild, and the viewer knows the
-script behind every face. The other parts still hand their finished shapes
-over through `present`.
+Every part is written as text-to-cad models: its geometry stays a plain
+build123d `build()` function, wrapped by `@model` functions that the server
+builds itself (the printed part, and where there is context geometry an
+assembly to look at, e.g. `stopper_in_rail`). A re-run rebuilds only what an
+edit changed, the page follows each rebuild, and the viewer knows the script
+behind every face. Each script ends with `present_model` (`src/cadkit/present.py`),
+which prints the pages and writes the printable files.
 
 `CAD_VIEWER=yacv mise run view ...` uses Yet Another CAD Viewer instead
 (`http://localhost:32323`, keep the tab open). `CAD_VIEWER=none` only exports,

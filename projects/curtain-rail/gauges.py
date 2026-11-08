@@ -21,11 +21,16 @@ g+1 starts where gauge g ends. Step n (counted from the front, starting at 1) of
 
 Every gauge is MAX_PART_LENGTH long, so it fits in the gap at the rail end.
 The parts are laid out in their print orientation (flat side down).
+
+Models: `gauge_width`, `gauge_slot` and `gauge_height`, each the three stairs
+of its kind side by side, labelled `<kind>_1` to `<kind>_3`. How they are
+built and shown: src/cadkit/present.py.
 """
 
 from build123d import Compound, Cylinder, Part, Pos, Rot
+from cad import model
 
-from cadkit import present
+from cadkit import present_model
 from cadkit.features import box
 from params import (
     GAUGE_COUNT,
@@ -83,19 +88,54 @@ def height_gauge(gauge: int) -> Part:
     return _stair(gauge, [(HEIGHT_STAIR_WIDTH, h) for h in _sizes(GAUGE_HEIGHT_START, gauge)])
 
 
-def layout(parts: list[Part]) -> Compound:
-    """Side by side along x, all with their lowest point on z = 0."""
+def layout(label: str, parts: dict[str, Part]) -> Compound:
+    """Side by side along x, all with their lowest point on z = 0, each labelled."""
     placed, x = [], 0.0
-    for p in parts:
+    for part_label, p in parts.items():
         bb = p.bounding_box()
-        placed.append(Pos(x - bb.min.X, 0, -bb.min.Z) * p)
+        moved = Pos(x - bb.min.X, 0, -bb.min.Z) * p
+        moved.label = part_label
+        placed.append(moved)
         x += bb.size.X + GAP
-    return Compound(placed)
+    return Compound(children=placed, label=label)
 
 
-GAUGES = {"gauge_width": width_gauge, "gauge_slot": slot_gauge, "gauge_height": height_gauge}
+def gauge_set(kind: str, make) -> Compound:
+    """The three stairs of one kind, `<kind>_1` to `<kind>_3`, as printed together."""
+    return layout(kind, {f"{kind}_{g}": make(g) for g in range(1, GAUGE_COUNT + 1)})
+
+
+def build_width() -> Compound:
+    return gauge_set("gauge_width", width_gauge)
+
+
+def build_slot() -> Compound:
+    return gauge_set("gauge_slot", slot_gauge)
+
+
+def build_height() -> Compound:
+    return gauge_set("gauge_height", height_gauge)
+
+
+@model
+def gauge_width():
+    return build_width()
+
+
+@model
+def gauge_slot():
+    return build_slot()
+
+
+@model
+def gauge_height():
+    return build_height()
+
 
 if __name__ == "__main__":
-    for name, make in GAUGES.items():
-        parts = [make(g) for g in range(1, GAUGE_COUNT + 1)]
-        present(name, layout(parts), project="curtain-rail")
+    for name, part, build in [
+        ("gauge_width", gauge_width, build_width),
+        ("gauge_slot", gauge_slot, build_slot),
+        ("gauge_height", gauge_height, build_height),
+    ]:
+        present_model(name, project="curtain-rail", part=part, build=build)

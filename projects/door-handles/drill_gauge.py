@@ -5,11 +5,14 @@ your drill bit turns freely in without wobble; the extra becomes
 DRILL_CLEARANCE in params.py.
 
 Modelled in its print orientation.
+
+Model: `drill_gauge`. How it is built and shown: src/cadkit/present.py.
 """
 
 from build123d import Align, Part, Pos, Text, extrude
+from cad import model
 
-from cadkit import present
+from cadkit import present_model
 from cadkit.features import box, vertical_hole
 from params import DRILL, TEMPLATE_PLATE
 
@@ -29,5 +32,12 @@ def build() -> Part:
     return plate
 
 
+@model
+def drill_gauge():
+    part = build()
+    part.label = "drill_gauge"
+    return part
+
+
 if __name__ == "__main__":
-    present("drill_gauge", build(), project="door-handles")
+    present_model("drill_gauge", project="door-handles", part=drill_gauge, build=build)
