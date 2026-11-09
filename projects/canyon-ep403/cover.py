@@ -35,7 +35,7 @@ from build123d import (
 )
 from cad import model
 
-from cadkit import present_model
+from cadkit import MONO, present_model
 from params import (
     BEND_RADIUS,
     BOTTOM_CORNER_RADIUS,
@@ -200,7 +200,7 @@ def lettering() -> Part:
     centred across the face, and between the top edge and the keyhole."""
     left, right = LEFT_X, LEFT_X + 2 * TOP_CORNER_RADIUS + TOP_EDGE
     keyhole_top = _keyhole_centre()[1] + KEYHOLE_RADIUS
-    text = Text(LETTERING, font_size=LETTERING_SIZE, align=(Align.CENTER, Align.CENTER))
+    text = Text(LETTERING, font_size=LETTERING_SIZE, font_path=MONO, align=(Align.CENTER, Align.CENTER))
     # From just above the face down to the engraving's floor.
     return Pos((left + right) / 2, keyhole_top / 2, THICKNESS - LETTERING_DEPTH) * extrude(
         text, amount=LETTERING_DEPTH + 1

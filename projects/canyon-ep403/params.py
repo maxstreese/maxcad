@@ -55,5 +55,5 @@ HOLE_OFFSET = 5.0  # either side of the slit's centre line, along x
 # and the start of the bend), centred across it and between the top edge and
 # the keyhole, readable from outside with the top edge up.
 LETTERING = "Simoncello"
-LETTERING_SIZE = 3.8  # font size: the word comes out 20.3 x 2.9 mm, 1.6 mm clear of each side
+LETTERING_SIZE = 3.5  # font size, in cadkit.MONO: the word comes out 20.5 x 2.8 mm, 1.6 mm clear of each side
 LETTERING_DEPTH = 0.4  # two 0.2 mm layers

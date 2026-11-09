@@ -12,7 +12,7 @@ Model: `drill_gauge`. How it is built and shown: src/cadkit/present.py.
 from build123d import Align, Part, Pos, Text, extrude
 from cad import model
 
-from cadkit import present_model
+from cadkit import MONO, present_model
 from cadkit.features import box, vertical_hole
 from params import DRILL, TEMPLATE_PLATE
 
@@ -27,7 +27,7 @@ def build() -> Part:
     for i, extra in enumerate(STEPS):
         x = PITCH * (i + 0.5)
         plate -= vertical_hole(x, 5, (-1, TEMPLATE_PLATE + 1), DRILL + extra)
-        label = extrude(Text(f"+{extra:.1f}", 3, align=(Align.CENTER, Align.CENTER)), ENGRAVE)
+        label = extrude(Text(f"+{extra:.1f}", 3, font_path=MONO, align=(Align.CENTER, Align.CENTER)), ENGRAVE)
         plate -= Pos(x, 12.5, TEMPLATE_PLATE - ENGRAVE) * label
     return plate
 
