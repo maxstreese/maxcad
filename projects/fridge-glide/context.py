@@ -6,7 +6,7 @@ import math
 from build123d import Color, Face, Line, Part, Plane, Pos, ThreePointArc, Wire, extrude, mirror
 
 from cadkit.features import box
-from params import CROWN_OFFSET, DOOR_GAP, DOOR_RADIUS, DOOR_THICKNESS, FRONT_THICKNESS, OPENING_SIDE, RAIL_LENGTH
+from params import DOOR_GAP, DOOR_RADIUS, DOOR_THICKNESS, FRONT_THICKNESS, GAP_INWARD, OPENING_SIDE
 
 # RGBA as numbers: a Color at module level would load the kernel on every run
 # of a model script, a replay included.
@@ -24,15 +24,31 @@ def handed(shape):
     raise ValueError(f"OPENING_SIDE={OPENING_SIDE!r}: expected 'left' or 'right'")
 
 
+def _rise(x: float, crown: float) -> float:
+    """How far the front at x stands forward of the front at the edge (x = 0),
+    for a circle of DOOR_RADIUS with its crown at `crown`."""
+    r = DOOR_RADIUS
+    return math.sqrt(r * r - (x - crown) ** 2) - math.sqrt(r * r - crown * crown)
+
+
+def crown_x() -> float:
+    """Where the front's crown lies, in from the edge: the circle of DOOR_RADIUS
+    through the gaps measured at the edge and at GAP_INWARD. Plain arithmetic
+    (bisection), no kernel."""
+    x1, gap1 = GAP_INWARD
+    rise = DOOR_GAP - gap1
+    lo, hi = x1 / 2, DOOR_RADIUS  # _rise(x1) grows with the crown position
+    assert _rise(x1, hi) > rise, "DOOR_RADIUS too large for the measured gaps"
+    for _ in range(100):
+        mid = (lo + hi) / 2
+        lo, hi = (mid, hi) if _rise(x1, mid) < rise else (lo, mid)
+    return (lo + hi) / 2
+
+
 def front_y(x: float) -> float:
-    """y of the fridge door's front face at x: a circle of DOOR_RADIUS seen
-    from above, 0 at the rail's middle."""
-    crown = RAIL_LENGTH / 2 + CROWN_OFFSET
-
-    def depth(u: float) -> float:
-        return math.sqrt(DOOR_RADIUS**2 - (u - crown) ** 2)
-
-    return depth(x) - depth(RAIL_LENGTH / 2)
+    """y of the fridge door's front face at x: 0 at the side edge, standing
+    forward towards the crown."""
+    return _rise(x, crown_x())
 
 
 def door_plan(x: tuple[float, float], y_back: float) -> Face:
