@@ -110,9 +110,12 @@ def export_printable(
     export_stl(printable, out / f"{name}.stl")
 
     size = part.bounding_box().size
+    # Summed over the solids: a Compound the server hands back reports 0 for
+    # its own volume when the solid in it is mirrored.
+    volume = sum(solid.volume for solid in part.solids())
     print(
         f"{name}: {size.X:.2f} x {size.Y:.2f} x {size.Z:.2f} mm, "
-        f"volume {part.volume / 1000:.2f} cm3 -> {out.relative_to(REPO_ROOT)}/"
+        f"volume {volume / 1000:.2f} cm3 -> {out.relative_to(REPO_ROOT)}/"
     )
 
 
