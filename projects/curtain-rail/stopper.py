@@ -37,8 +37,8 @@ from params import (
 )
 
 
-def build(length: float = STOPPER_LENGTH, slide: float = FIT_SLIDE, slot: float = FIT_SLOT) -> Part:
-    """The stopper; `length` and the clearances can be overridden."""
+def build() -> Part:
+    length, slide = STOPPER_LENGTH, FIT_SLIDE
     # Body = channel cross-section shrunk by the clearance all around, with a
     # 45 degree lead-in taper on the nose so it pushes into the rail easily.
     profile = offset(channel_cavity(), -slide)
@@ -49,7 +49,7 @@ def build(length: float = STOPPER_LENGTH, slide: float = FIT_SLIDE, slot: float 
     # Stem in the slot. Its bottom sits `slide` above the rail's underside, so it
     # ends up flush once the screw has pushed the body down into its seat. It
     # stops where the nose taper starts, so it never pokes out through the taper.
-    stem_half = RAIL_SLOT / 2 - slot
+    stem_half = RAIL_SLOT / 2 - FIT_SLOT
     stem = box((-stem_half, stem_half), (0, nose_start), (slide, 2.0))
 
     # The insert goes in from the top face, where the body is wide enough for
