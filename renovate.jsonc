@@ -57,8 +57,10 @@
 
   // Every PR is rebuilt once it falls behind main, not only when it
   // conflicts. The default rebases on a mere lag only with automerge or a
-  // branch protection rule requiring up-to-date branches, and this repository
-  // has neither, so an open PR would sit at its first version.
+  // branch protection rule requiring up-to-date branches; without either an
+  // open PR would sit at its first version. With automerge the default would
+  // do the same; kept explicit so what is merged was tested on the main it
+  // lands on.
   "rebaseWhen": "behind-base-branch",
 
   // text-to-cad's library (`cad`), server (`cad-server`) and MCP server
@@ -136,7 +138,19 @@
     }
   ],
 
-  // CI proves the lock installs and every part still builds and exports; it
-  // cannot tell whether a part still fits. Every PR is read by a human.
-  "automerge": false
+  // Every PR is merged once all of its checks are green, Renovate's own
+  // included: a PR whose lock file could not be regenerated has a failing
+  // `renovate/artifacts` and stays open. The workflow starts a run whenever
+  // CI finishes on a Renovate PR, which is the run that merges it.
+  //
+  // What this gives up: CI proves the lock installs and every part still
+  // builds and exports; it cannot tell whether a part still fits.
+  "automerge": true,
+
+  // Renovate does the merging itself, on the run that finds the checks green:
+  // GitHub's own auto-merge needs a branch protection rule to wait on, and
+  // there is none. A merge commit, as the PRs merged by hand have been;
+  // left to choose, Renovate would rebase.
+  "platformAutomerge": false,
+  "automergeStrategy": "merge-commit"
 }

@@ -20,9 +20,19 @@ on:
     - cron: '17 3 * * *'
   # After every push to main, so open PRs are rebuilt on it right away
   # (renovate.jsonc rebases them once behind) instead of the next night.
-  # Renovate itself never pushes to main, so this does not loop.
+  # Renovate's own merges are such pushes too. That is a chain, not a loop:
+  # each run merges at most one PR and rebuilds the rest, and it ends when
+  # none is left.
   push:
     branches: [main]
+  # When CI finishes on one of Renovate's PRs, so a green PR is merged then
+  # (renovate.jsonc: automerge) and not the next night. Renovate merges only
+  # with every check green, and `checks` is the only workflow on a PR.
+  # Only a successful run starts the job, see its `if`.
+  workflow_run:
+    workflows: [checks]
+    types: [completed]
+    branches: ['renovate/**']
   # By hand: gh workflow run renovate.yml -f log-level=debug
   workflow_dispatch:
     inputs:
@@ -42,6 +52,7 @@ permissions:
 
 jobs:
   renovate:
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     timeout-minutes: 30
     env:

@@ -8,8 +8,8 @@
 # can run. If a second check seems to belong here, it probably belongs in
 # `just ci` instead.
 #
-# What this cannot cover: whether a part still fits. Renovate PRs are read by
-# a human for that (renovate.jsonc: no automerge).
+# What this cannot cover: whether a part still fits. Renovate merges its PRs
+# once this is green all the same (renovate.jsonc: automerge).
 name: checks
 
 on:
