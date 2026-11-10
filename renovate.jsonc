@@ -82,6 +82,26 @@
       "groupName": "dependencies"
     },
     {
+      // Everything pinned in a workflow file: action SHAs, Renovate's own
+      // image, any other tool version. None of it changes what is built, only
+      // the pipeline, and Renovate alone releases several times a day, so
+      // these come on Mondays only (Europe/Berlin, which the nightly run
+      // always falls on). Matched by file because the image comes from a
+      // regex manager, not github-actions.
+      //
+      // Its own group because a schedule cannot be set per update inside one:
+      // a branch takes its config from whichever upgrade sorts first.
+      // updateNotScheduled false so an open PR also waits for Monday. The
+      // topic makes the PR "Update CI"; the rule above would otherwise title
+      // it "Update dependencies" too.
+      "description": "Workflow pins weekly, in their own PR",
+      "matchFileNames": [".github/workflows/**"],
+      "groupName": "ci",
+      "commitMessageTopic": "CI",
+      "schedule": ["* * * * 1"],
+      "updateNotScheduled": false
+    },
+    {
       // Without it a bump would widen `==` into a range rather than replace
       // it.
       "description": "pyproject pins stay exact",
