@@ -49,7 +49,10 @@
   // It is off by default and config:recommended does not turn it on.
   //
   // "at any time" because the workflow's cron decides when Renovate runs;
-  // otherwise this falls back to its own Monday-morning default.
+  // otherwise this falls back to its own Monday-morning default. The
+  // workflow narrows it all the same: runs started by a push or by CI
+  // finishing open no new PR, this one included (RENOVATE_MODE in
+  // renovate.yml).
   "lockFileMaintenance": {
     "enabled": true,
     "schedule": ["at any time"]
@@ -81,7 +84,15 @@
       "commitMessageTopic": "dependencies",
       "commitMessageExtra": "",
       "matchUpdateTypes": ["major", "minor", "patch", "pin", "pinDigest", "digest", "rollback", "bump", "replacement"],
-      "groupName": "dependencies"
+      "groupName": "dependencies",
+      // Needed for automerge because the title is pinned: Renovate looks for
+      // an earlier PR with this branch and title, and finding one merged it
+      // turns automerge off for the new one ("Disabling automerge because PR
+      // was merged previously"). With a title that never changes, that is
+      // every PR after the first. "always" skips the lookup, as Renovate
+      // itself does for lock file maintenance. The price: a PR closed by hand
+      // comes back on the next run.
+      "recreateWhen": "always"
     },
     {
       // Everything pinned in a workflow file: action SHAs, Renovate's own
@@ -100,6 +111,8 @@
       "matchFileNames": [".github/workflows/**"],
       "groupName": "ci",
       "commitMessageTopic": "CI",
+      // For automerge, as in the rule above.
+      "recreateWhen": "always",
       "schedule": ["* * * * 1"],
       "updateNotScheduled": false
     },
