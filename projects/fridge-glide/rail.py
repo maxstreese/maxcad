@@ -186,8 +186,10 @@ def build() -> Part:
     # contact lines lie (r + clearance) * sin 45 either side of its axis.
     contact = (HEAD_DIAMETER / 2 + GLIDE_CLEARANCE) * math.sqrt(0.5)
     assert SLOT_WIDTH / 2 < contact - 0.2, "the slot swallows the head's contact lines"
-    # The flared channel must not break through the body's walls.
+    # The flared channel must not break through the body's walls, and the head
+    # must stay out of the flare at both ends of its travel.
     assert channel_half_diagonal(LEAD_IN) < rail_half_height()
+    assert RAIL_END_MARGIN > LEAD_IN_LENGTH, "the head runs into the lead-in"
     # Doors closed, the rail must clear the fridge door's (curved) front.
     crown = max(front_y(x) for x in (0, x1))  # the front rises towards the crown
     assert rail_front() - crown >= RUN_CLEARANCE, "the rail hits the fridge door's front"

@@ -49,8 +49,8 @@ SLOT_WIDTH = 4.0  # where the slot leaves the channel; it widens at 45 degrees t
 #   either side of its axis)
 NECK_THICKNESS = 3.0  # in z, through the slot: 0.5 clear each side when centred
 CHANNEL_WALL = 1.5  # beyond the channel's corners
-LEAD_IN = 0.7  # the channel and slot flare by this much (normal to the faces) at both rail ends
-LEAD_IN_LENGTH = 4.0  # over this length
+LEAD_IN = 0.4  # the channel and slot flare by this much (normal to the faces) at both rail ends
+LEAD_IN_LENGTH = 2.0  # over this length: only for fitting, the head never leaves the rail
 RUN_CLEARANCE = 1.0  # minimum gap between the rail and anything on the fridge door
 
 # --- Slider (on the fridge door): a clip around its side edge -----------------------
@@ -66,7 +66,8 @@ FRONT_LEG_THICKNESS = 3.0  # leg on the front face, at the door's foremost point
 LEG_BEYOND_HEAD = 4.0  # the leg runs on this far past the head's inner end
 
 # --- Rail (on the furniture door) ---------------------------------------------------
-RAIL_END_MARGIN = 1.0  # beyond the head's travel at each end
+RAIL_END_MARGIN = 2.5  # beyond the head's travel at each end: more than LEAD_IN_LENGTH, so
+#   at both ends of its travel the head runs wholly in the full-size channel
 FLANGE_THICKNESS = 3.0  # against the furniture door; the countersinks (1.85 deep) leave 1.15
 SCREW_BEYOND_RAIL = 5.0  # screw centres above and below the channel's body (countersinks clear of it)
 FLANGE_MARGIN = 5.0  # flange beyond the screw centres

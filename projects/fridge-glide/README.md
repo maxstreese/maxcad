@@ -29,7 +29,7 @@ redesigned:
 
 | Part | What it is |
 |---|---|
-| `rail` | Diamond channel on a flange, 108 mm long, for the furniture door; 3 x 2 countersunk screws |
+| `rail` | Diamond channel on a flange, 111 mm long, for the furniture door; 3 x 2 countersunk screws |
 | `slider` | Clip around the fridge door's side edge, 50 mm tall, with the neck and the 6 mm head, 16 mm long |
 
 `glide_on_doors` shows both between the closed doors. The top and the bottom
@@ -47,7 +47,7 @@ up; if it creeps down, add a strip of VHB tape (or a TPU pad) on the leg.
 - Door thickness at the side edge: 46.09 mm (calipers; tricky on the curve).
 - Gap to the furniture door: 22 mm at the edge, 17 mm at 75 mm in.
 - Space beside the side edge: at least 6 mm (the web is 2.5; the rail starts
-  3.5 mm outside the edge).
+  5 mm outside the edge).
 - Room for the hook behind the back face, up to the gasket: 6 mm (the hook
   reaches in 4).
 - Travel: while the doors open, the fridge door's edge moves from 30 to 120 mm
@@ -70,7 +70,7 @@ up; if it creeps down, add a strip of VHB tape (or a TPU pad) on the leg.
 1. Clip the slider onto the fridge door's edge at the coupling's height.
 2. Slide the rail onto the head from the rail's outer end (the end towards the
    furniture door's edge), close both doors, and with the rail level and its
-   outer end 1 mm short of the head, mark the screw holes on the furniture door.
+   outer end 2.5 mm short of the head, mark the screw holes on the furniture door.
 3. Screw the rail on; check that the doors open fully without the head
    reaching the rail's inner end.
 
