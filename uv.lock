@@ -66,14 +66,14 @@ wheels = [
 
 [[package]]
 name = "cad"
-version = "0.11.6"
+version = "0.11.8"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "numpy" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/4c/f0/497632493d0f77ec1775711d5e858a3eac9e4e2c6ae030acf5f6aac30611/cad-0.11.6.tar.gz", hash = "sha256:df664d7321796123ddf61ffee9fd5208e7bf9fb3d202f04c4edeb896bae134d7", size = 1200764, upload-time = "2026-11-10T06:04:59.834Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/6c/a1/dc076a8b3337552955c30ea7a18c82256efe46797b0ca2ded1a80f353c3f/cad-0.11.8.tar.gz", hash = "sha256:6dfff3b5de323a437070fb247916ac00dc47150551b8220310360ba356383514", size = 1811266, upload-time = "2026-11-11T02:12:08.06Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/1c/42/318b663029e08223ee63a1fc0d2b572bae088694cd61c43718c7bd02d950/cad-0.11.6-py3-none-any.whl", hash = "sha256:f43eae5f71e5e81bc1368e54eec9024db5ccd21268eecd519cf4f2f478d71d9d", size = 1244269, upload-time = "2026-11-10T06:04:57.81Z" },
+    { url = "https://files.pythonhosted.org/packages/1a/c1/a5653f528e3f9351c8b9fb40ef66debf4f643d8d380bdc0b7b00e529a60b/cad-0.11.8-py3-none-any.whl", hash = "sha256:a977467876c7ca7d0623df2ea0732ee18406fd41f5ab27e2e8fbf5ba054c6520", size = 1867042, upload-time = "2026-11-11T02:12:06.07Z" },
 ]
 
 [package.optional-dependencies]
@@ -91,16 +91,16 @@ build123d = [
 
 [[package]]
 name = "cad-mcp"
-version = "0.11.6"
+version = "0.11.8"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/1d/fe/215dc71a6b1903f240f2dfb47aeae7866692df2c2917e87a765c43bd260b/cad_mcp-0.11.6.tar.gz", hash = "sha256:19cd40d73e68b05c4030ce1c804b4b664d6486d3229529b9cec50f37230fae93", size = 25667, upload-time = "2026-11-10T06:05:34.077Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/58/34/4a718f8bd5524bbf357c960a60757cb9225ddabb445a9164d9e225ef7ffd/cad_mcp-0.11.8.tar.gz", hash = "sha256:cfeccada0f66e0b8ced497714273403b83cbc5a8ce3df99e3cbdf4598a0b242a", size = 25660, upload-time = "2026-11-11T02:12:27.151Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/73/86/cc53abd552bd246a548ee9a88223cf05f555cb9a73fc7c2e6d20d2ae767e/cad_mcp-0.11.6-py3-none-any.whl", hash = "sha256:fa6d98728ef0a631f2c5914fdf3482bf62aaa83cfdffacba3878ee8d4608dc3b", size = 28309, upload-time = "2026-11-10T06:05:32.577Z" },
+    { url = "https://files.pythonhosted.org/packages/9e/05/ff2ef1c5abf1b2e18f4afa9bc5098d86318f076b5bcca1bbc969652f79b9/cad_mcp-0.11.8-py3-none-any.whl", hash = "sha256:685c77dc1f5f1bb8c33a40bc04106f7a00d5ce4910d40e32ab0e0d211501300a", size = 28310, upload-time = "2026-11-11T02:12:25.881Z" },
 ]
 
 [[package]]
 name = "cad-server"
-version = "0.11.6"
+version = "0.11.8"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "cad" },
@@ -109,9 +109,9 @@ dependencies = [
     { name = "pillow" },
     { name = "uv" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/52/48/9e56aa9e009cf888bf4852d98b29c6c8113713d4bceb8634798e4481ce51/cad_server-0.11.6.tar.gz", hash = "sha256:1045777d774aa1a410d93e9c2a76e2141af3e7b24f86c1f1483680a3ae8fa0f8", size = 4698193, upload-time = "2026-11-10T06:05:22.567Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/6a/fd/9af405db1c363f996e410063bfb4cbd2d9355dca459884bf74d72efc1fdb/cad_server-0.11.8.tar.gz", hash = "sha256:956274fcfd6fbda36635f06756b71b9b4b4684946e4882527e167713c8fe99d3", size = 4824233, upload-time = "2026-11-11T02:12:17.933Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/1d/da/c03a1922023c7bfe295f2b6305b913decf91f88b3837f0779702cd73e1d6/cad_server-0.11.6-py3-none-any.whl", hash = "sha256:0dd164c180ba85a7d29c44d1a9f5503813f2e839c905f2f330aef54961d84472", size = 4824360, upload-time = "2026-11-10T06:05:20.386Z" },
+    { url = "https://files.pythonhosted.org/packages/f2/05/1e118b9a49629e2f49abab6e0c32e0c1568538723b2e2ee268cd30bf7a0f/cad_server-0.11.8-py3-none-any.whl", hash = "sha256:e1fb646ab32c7d3c231d16dbcb61378ba13834f1a69d0b0c42e905b237ae069f", size = 4955639, upload-time = "2026-11-11T02:12:16.115Z" },
 ]
 
 [[package]]
@@ -551,9 +551,9 @@ dependencies = [
 [package.metadata]
 requires-dist = [
     { name = "build123d", specifier = "==0.13.0" },
-    { name = "cad", extras = ["build123d"], specifier = "==0.11.6" },
-    { name = "cad-mcp", specifier = "==0.11.6" },
-    { name = "cad-server", specifier = "==0.11.6" },
+    { name = "cad", extras = ["build123d"], specifier = "==0.11.8" },
+    { name = "cad-mcp", specifier = "==0.11.8" },
+    { name = "cad-server", specifier = "==0.11.8" },
     { name = "yacv-server", specifier = "==0.12.2" },
 ]
 
