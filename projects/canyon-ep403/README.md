@@ -17,6 +17,10 @@ Status: **draft**. The outline and the bend come from a friend's Solid Edge
 sketches of his original (2026-11-08); `params.py` marks every number as
 MEASURED (his), ESTIMATE (read off his screen photos) or PLACEHOLDER.
 
+This is a personal project, not affiliated with or endorsed by Canyon
+Bicycles; "Canyon" and the part numbers only say what the part is meant to
+fit. It has not been printed or fitted to a bike: use it at your own risk.
+
 ## Open questions (for whoever has the original)
 
 1. **Thickness** (placeholder 2.0 mm).
