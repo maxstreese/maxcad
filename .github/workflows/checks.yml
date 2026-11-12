@@ -1,7 +1,7 @@
 # What CI runs, which is `just ci` in the flake's dev shell: the Renovate
 # configs and workflows lint, uv.lock installs exactly, the vendored agent
-# skills match their release, and every part of every project builds and
-# exports.
+# skills match their release, every part of every project builds and
+# exports, and the site generates from that (pages.yml publishes it).
 #
 # Everything the repo knows about checking itself lives in the justfile and
 # the flake; this file only gets a machine into a state where that command

@@ -34,6 +34,22 @@ def choice(default: str, doc: str) -> Any:
     return field(default=default, metadata={"doc": doc})
 
 
+def describe(options: Any) -> list[dict[str, Any]]:
+    """`options` as plain data, one entry per field: its value here, its
+    default and what it declares (limits and unit, or the choices). What a
+    part's metadata file carries, for the site's options table."""
+    hints = get_type_hints(type(options))
+    described = []
+    for f in fields(options):
+        entry = {"name": f.name, "value": getattr(options, f.name), "default": f.default, "doc": f.metadata.get("doc", "")}
+        if get_origin(hints[f.name]) is Literal:
+            entry["choices"] = list(get_args(hints[f.name]))
+        else:
+            entry.update({k: f.metadata[k] for k in ("low", "high", "unit")})
+        described.append(entry)
+    return described
+
+
 def check(options: Any) -> None:
     """Raise ValueError unless every field of `options` is within what it declares."""
     hints = get_type_hints(type(options))

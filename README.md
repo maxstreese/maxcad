@@ -64,11 +64,33 @@ Outputs go to `out/<project>/` (not committed):
 
 - `<part>.step`: exact geometry in use position (open in FreeCAD to measure)
 - `<part>.3mf` / `.stl`: mesh, already rotated into the intended print orientation
+- `<part>.glb`, `<part>_in_context.glb`, `<part>.json`: what the site shows
+  of the part (below)
+
+## Site
+
+```sh
+just site          # build every project and generate site/
+just site-serve    # look at it: http://localhost:8000
+```
+
+A static site with a page per project: each part in a 3D viewer (alone or
+among its context geometry), its variants and options where it has them, and
+its 3MF and STEP to download; the text is the project's `README.md`. Pushing
+to `main` publishes it to GitHub Pages (`.github/workflows/pages.yml`).
+
+`src/cadkit/site.py` generates it as plain HTML from what the part scripts
+export: the GLB to show and a small JSON saying what the part is. No
+framework and no Node: the viewer is
+[`<model-viewer>`](https://modelviewer.dev), pinned in `flake.nix` and copied
+into the site, so a page loads nothing from another server. A new project or
+part appears without anyone adding it.
 
 ## Layout
 
 ```
-src/cadkit/          shared helpers (export + viewer, geometry features)
+src/cadkit/          shared helpers (export + viewer, geometry features, options,
+                     the site's generator and its stylesheet and script)
 projects/<name>/
   README.md          what the project is + print sheet
   params.py          every number, with ESTIMATE / PLACEHOLDER / FIT markers

@@ -29,6 +29,21 @@ build project:
         case "$(basename "$f")" in params.py|context.py|options.py) ;; *) CAD_VIEWER=none uv run python "$f";; esac
     done
 
+# Build every project and generate the static site into site/ (what GitHub Pages serves)
+site:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    # The exports go to a folder of their own, not out/: the site publishes
+    # exactly what this build wrote, never a file left over from an earlier one.
+    exports=$(mktemp -d)
+    trap 'rm -rf "$exports"' EXIT
+    CAD_OUT_DIR="$exports" just build-all
+    uv run python -m cadkit.site "$exports" site
+
+# Serve site/ at http://localhost:8000 (run `just site` first)
+site-serve:
+    python -m http.server --directory site 8000
+
 # Copy text-to-cad's agent skills of the release uv.lock pins into .claude/skills/
 skills:
     uv run scripts/sync_skills.py
@@ -45,8 +60,8 @@ build-all:
     set -euo pipefail
     for dir in projects/*/; do just build "$(basename "$dir")"; done
 
-# What CI runs: lint, the locked install, the vendored skills, every project built
+# What CI runs: lint, the locked install, the vendored skills, every project built and the site made of it
 ci: lint
     uv sync --locked
     uv run scripts/sync_skills.py --check
-    just build-all
+    just site

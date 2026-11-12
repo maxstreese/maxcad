@@ -1,0 +1,124 @@
+/* The site's one stylesheet (src/cadkit/site.py copies it). */
+:root {
+  color-scheme: light dark;
+  --bg: #f5f6f8;
+  --surface: #ffffff;
+  --stage: #e9edf2;
+  --text: #1b222c;
+  --muted: #5a6573;
+  --border: #dbe0e8;
+  --accent: #2b5c9c;
+  --accent-text: #ffffff;
+  --code: #eef1f5;
+  --radius: 10px;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #11151a;
+    --surface: #191f27;
+    --stage: #222a34;
+    --text: #e5e9ef;
+    --muted: #9ba7b6;
+    --border: #2b3440;
+    --accent: #8db6f2;
+    --accent-text: #0e1319;
+    --code: #232b36;
+  }
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 16px/1.55 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+a { color: var(--accent); text-underline-offset: 0.15em; }
+code, pre { font-family: ui-monospace, "JetBrains Mono", "SF Mono", Menlo, Consolas, monospace; font-size: 0.9em; }
+code { background: var(--code); padding: 0.1em 0.35em; border-radius: 4px; }
+h1, h2, h3 { line-height: 1.2; margin: 0; }
+
+.wrap { max-width: 1120px; margin: 0 auto; padding: 0 16px; }
+header.top { padding: 40px 0 24px; }
+header.top h1 { font-size: 2rem; letter-spacing: -0.01em; }
+header.top p { margin: 10px 0 0; max-width: 62ch; color: var(--muted); }
+header.top .back { display: inline-block; margin-bottom: 14px; font-size: 0.9rem; text-decoration: none; }
+header.top .back:hover { text-decoration: underline; }
+
+.badge {
+  display: inline-block; vertical-align: middle; margin-left: 10px; padding: 2px 9px;
+  border: 1px solid var(--border); border-radius: 999px;
+  font-size: 0.75rem; font-weight: 500; letter-spacing: 0; color: var(--muted); background: var(--surface);
+}
+
+model-viewer {
+  display: block; width: 100%; aspect-ratio: 4 / 3; height: auto;
+  background: var(--stage); border-radius: calc(var(--radius) - 3px);
+  --poster-color: transparent; --progress-bar-color: var(--accent);
+}
+
+/* Index: one card per project. */
+.cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; padding-bottom: 48px; }
+.card {
+  position: relative; display: flex; flex-direction: column;
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 10px;
+  transition: border-color 0.15s, transform 0.15s;
+}
+.card:hover { border-color: var(--accent); transform: translateY(-2px); }
+.card model-viewer { pointer-events: none; }
+.card h2 { font-size: 1.1rem; margin: 14px 6px 0; }
+.card h2 a { color: inherit; text-decoration: none; }
+.card h2 a::after { content: ""; position: absolute; inset: 0; border-radius: var(--radius); }
+.card p { margin: 6px 6px 0; color: var(--muted); font-size: 0.92rem; }
+.card .summary { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 4; line-clamp: 4; overflow: hidden; }
+.card .meta { margin-top: auto; padding: 12px 6px 4px; font-size: 0.8rem; }
+
+/* Project page: the parts, then the README. */
+.parts { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 440px), 1fr)); gap: 20px; align-items: start; }
+.part { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px; min-width: 0; }
+.part h2 { font-size: 1.05rem; margin: 2px 4px 12px; font-weight: 600; }
+.part h2 code { background: none; padding: 0; font-size: 1em; }
+.controls { display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: center; margin: 12px 4px 0; }
+.seg { display: inline-flex; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+.seg button {
+  font: inherit; font-size: 0.85rem; padding: 6px 12px; border: 0; background: transparent; color: var(--text); cursor: pointer;
+}
+.seg button + button { border-left: 1px solid var(--border); }
+.seg button[aria-pressed="true"] { background: var(--accent); color: var(--accent-text); }
+.controls label { font-size: 0.85rem; color: var(--muted); display: inline-flex; gap: 8px; align-items: center; }
+.controls select {
+  font: inherit; font-size: 0.85rem; padding: 5px 8px; border: 1px solid var(--border); border-radius: 8px;
+  background: var(--surface); color: var(--text); max-width: 100%;
+}
+.facts { margin: 12px 4px 0; color: var(--muted); font-size: 0.9rem; font-variant-numeric: tabular-nums; }
+.downloads { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 4px 4px; }
+.downloads a {
+  display: inline-flex; align-items: baseline; gap: 8px; padding: 7px 14px; border-radius: 8px;
+  border: 1px solid var(--border); text-decoration: none; font-weight: 600; font-size: 0.9rem;
+}
+.downloads a:hover { border-color: var(--accent); }
+.downloads a small { font-weight: 400; color: var(--muted); }
+.downloads a span { font-weight: 400; color: var(--muted); font-size: 0.8rem; }
+
+.scroll { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: 0.9rem; }
+th, td { text-align: left; vertical-align: top; padding: 7px 10px; border-bottom: 1px solid var(--border); }
+th { font-weight: 600; color: var(--muted); font-size: 0.8rem; white-space: nowrap; }
+.options { margin: 14px 4px 4px; }
+.options h3 { font-size: 0.85rem; color: var(--muted); font-weight: 600; margin-bottom: 4px; }
+.options td:nth-child(2) { white-space: nowrap; font-variant-numeric: tabular-nums; }
+.options .doc { margin-top: 4px; color: var(--muted); font-size: 0.85rem; }
+
+.readme { max-width: 76ch; padding: 40px 0 24px; }
+.readme h2 { font-size: 1.25rem; margin: 36px 0 10px; }
+.readme h3 { font-size: 1.05rem; margin: 28px 0 8px; }
+.readme p, .readme ul, .readme ol { margin: 0 0 14px; }
+.readme li { margin-bottom: 6px; }
+.readme pre { background: var(--code); padding: 12px 14px; border-radius: 8px; overflow-x: auto; }
+.readme pre code { background: none; padding: 0; }
+.readme .scroll { margin: 0 0 18px; }
+
+footer { border-top: 1px solid var(--border); margin-top: 32px; padding: 20px 0 40px; color: var(--muted); font-size: 0.85rem; }
+
+@media (prefers-reduced-motion: reduce) { .card { transition: none; } .card:hover { transform: none; } }

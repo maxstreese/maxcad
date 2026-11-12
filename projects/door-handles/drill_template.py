@@ -162,4 +162,6 @@ if __name__ == "__main__":
             assembly=assembly,
             context=partial(preview_context, VARIANTS[name]),
             print_orientation=Location((0, 0, 0), PRINT_ROTATION),
+            options=VARIANTS[name],
+            variant_of="drill_template",
         )

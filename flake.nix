@@ -20,6 +20,19 @@
       # has no wheels for 3.15 yet (cp311-cp314, 2026-11-08).
       python = pkgs: pkgs.python314;
 
+      # <model-viewer>, the web component the site shows the parts' GLBs with
+      # (`just site`). Its npm package, pinned here by version and hash and
+      # copied into the site, so a page loads nothing from anyone else's
+      # server. To update: the new version in both places of the url, the
+      # hash from
+      #   nix store prefetch-file --unpack --json <url>
+      modelViewer =
+        pkgs:
+        pkgs.fetchzip {
+          url = "https://registry.npmjs.org/@google/model-viewer/-/model-viewer-4.4.0.tgz";
+          hash = "sha256-G5D9Obi9WpzzxLZYiHZnbdhAkYjo/Dfv9rZHcpx2SNA=";
+        };
+
       tools =
         pkgs: with pkgs; [
           (python pkgs)
@@ -62,6 +75,9 @@
           # choice from the state folder, where `just setup` saves it.
           CAD_TELEMETRY = "0";
           CAD_UPDATE_CHECK = "0";
+
+          # The site's viewer script (src/cadkit/site.py copies it).
+          MODEL_VIEWER_JS = "${modelViewer pkgs}/dist/model-viewer.min.js";
 
           # Everything else text-to-cad keeps stays in .cad/ (gitignored),
           # not in ~: the registration of the server in .venv, its saved

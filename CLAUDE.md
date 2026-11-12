@@ -43,6 +43,10 @@ disagree:
 - No kernel objects at module level (a `Location`, `Color`, shape): numbers there, kernel objects
   inside functions, so a replayed run does not load the kernel.
 - `just build <project>` builds without the server (`CAD_VIEWER=none`), as CI does.
+- `just site` generates the static site into `site/` (`src/cadkit/site.py`, README "Site"). It
+  shows what `present_model` exports and renders each project's `README.md` as its page: a part
+  is on the site once its script runs, and the README's first paragraph and `Status: **...**`
+  line are the project's card. Part names in backticks in the README set the order of the parts.
 
 ## Skills
 
