@@ -33,9 +33,11 @@ redesigned:
 | `slider` | Clip around the fridge door's side edge, 50 mm tall, with the neck and the 6 mm head, 16 mm long |
 
 `glide_on_doors` shows both between the closed doors. The top and the bottom
-coupling are the same two parts: print two of each. They are made for doors
-opening on the left, seen from the kitchen; `OPENING_SIDE = "right"` mirrors
-them.
+coupling are the same two parts: print two of each. They fit doors opening on
+either side: both parts are the same above and below the rail's centre line,
+so the mirrored part is the same part turned over, and the printed files come
+out identical. `OPENING_SIDE` (`params.py`, left as our doors open, seen from
+the kitchen) only places them in the preview.
 
 Status: **first draft, not printed**. The door's thickness, the gaps, the room
 beside and behind it and the travel are measured; the curve's radius is still
