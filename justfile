@@ -26,7 +26,7 @@ build project:
     #!/usr/bin/env bash
     set -euo pipefail
     for f in projects/{{project}}/*.py; do
-        case "$(basename "$f")" in params.py|context.py) ;; *) CAD_VIEWER=none uv run python "$f";; esac
+        case "$(basename "$f")" in params.py|context.py|options.py) ;; *) CAD_VIEWER=none uv run python "$f";; esac
     done
 
 # Copy text-to-cad's agent skills of the release uv.lock pins into .claude/skills/

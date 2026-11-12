@@ -34,6 +34,12 @@ disagree:
 - The script ends with `cadkit.present_model(...)`, which picks the path by `CAD_VIEWER`
   (`src/cadkit/present.py`). Unlike the skill's "runs write nothing", a run here writes
   `out/<project>/<part>.{step,3mf,stl}`, the 3MF/STL in print orientation.
+- Where a part is meant to be configured, what may be chosen is declared, not left to editing
+  `params.py`: a frozen `Options` dataclass in the project's `options.py` (`cadkit.options`:
+  `number` with limits, `choice` on a `Literal`, `check` in `__post_init__`), `build(options)`,
+  and a `VARIANTS` dict of the configurations that are built, each with its own `@model` and
+  files. `projects/door-handles/` is the example. Only add an option that changes the printed
+  part and builds across its whole range.
 - No kernel objects at module level (a `Location`, `Color`, shape): numbers there, kernel objects
   inside functions, so a replayed run does not load the kernel.
 - `just build <project>` builds without the server (`CAD_VIEWER=none`), as CI does.

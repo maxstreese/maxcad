@@ -1,13 +1,12 @@
 """Shared numbers for the door-handles project (all in mm).
 
 Values marked PLACEHOLDER are guesses. FIT values get tuned from the drill gauge.
+Where the holes go (handle spacing, distances from the door's edges, which
+corner) is not here: those are the template's options, in options.py.
 """
 
 # --- Doors and handles -----------------------------------------------------
 DOOR_THICKNESS = 19.0  # PLACEHOLDER (only used for the preview; doors must be > TEMPLATE_FENCE_DEPTH)
-HANDLE_SPACING = 96.0  # screw centre distance
-HANDLE_EDGE_OFFSET = 28.0  # right edge of door to screw centre line
-HANDLE_TOP_OFFSET = 28.0  # top edge of door to the upper screw
 DRILL = 5.0  # drill bit for the handle screws
 
 # --- Fits (FIT: tune with drill_gauge) -------------------------------------

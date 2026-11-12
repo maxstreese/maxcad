@@ -72,6 +72,8 @@ src/cadkit/          shared helpers (export + viewer, geometry features)
 projects/<name>/
   README.md          what the project is + print sheet
   params.py          every number, with ESTIMATE / PLACEHOLDER / FIT markers
+  options.py         where a part has them: the values meant to be chosen, with
+                     their limits, and the variants that get built (door-handles)
   context.py         non-printed geometry for the viewer (rails, doors, screws)
   <part>.py          one printable part each
 ```
