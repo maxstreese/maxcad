@@ -46,6 +46,21 @@ beside and behind it and the travel are measured; the curve's radius is still
 a PLACEHOLDER (`params.py`). On a vertical edge only the pinch holds the clip
 up; if it creeps down, add a strip of VHB tape (or a TPU pad) on the leg.
 
+## What glides on what
+
+Two parts of the same plastic slide badly on each other, PETG on PETG
+especially: they tend to stick and squeak. (A rule of thumb, not yet tried on
+these parts.) The clip has to be PETG, so the rail is the part that changes:
+it only has to be stiff and smooth, and prints in PLA. Neither part's shape
+changes.
+
+If the PLA rail wears or squeaks, the next thing to try is a rail in a sliding
+filament: igus iglidur first (made for this, prints much like PETG), then
+unfilled nylon, which must be dried, warps on a part this long and swells a
+little with moisture (the head has 0.3 mm of clearance). The slider stays PETG
+either way: nylon relaxes under the clip's constant pinch. No filament with
+carbon or glass fibre on either glide face: it wears the other one.
+
 ## Measured (2026-11-09)
 
 - Door thickness at the side edge: 46.09 mm (calipers; tricky on the curve).
@@ -121,7 +136,7 @@ at all. The rail only needs the curve roughly.
 
 | | |
 |---|---|
-| Material | PETG (the clip must flex; PLA may crack when pushed over the edge) |
+| Material | Slider: PETG (the clip must flex; PLA may crack when pushed over the edge). Rail: PLA, so the pair is not PETG on PETG (above) |
 | Orientation | as in the 3MF: rail flat on its flange, slider standing on its web |
 | Layer height | 0.2 mm |
 | Walls | 4 |
