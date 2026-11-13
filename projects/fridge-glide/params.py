@@ -74,3 +74,29 @@ FLANGE_MARGIN = 5.0  # flange beyond the screw centres
 SCREW_FROM_END = 8.0  # the outer screws, in from the rail's ends; a third in the middle
 SCREW_HOLE = 3.8  # for 3.5 mm countersunk wood screws
 SCREW_HEAD = 7.5  # countersink diameter (90 degrees)
+
+# --- Profile gauge (measuring aid, not part of the coupling) -------------------------
+# A rigid C around the fridge door's side edge, used with the door open: web on
+# the side face, hook behind the back face, and a straight leg standing off the
+# front. A caliper's depth rod through the leg's holes reads the distance to the
+# front at each station; a wedge between leg and door holds the hook on the back.
+GAUGE_HEIGHT = 45.0  # along the edge
+GAUGE_WEB = 8.0  # thick: the C must not flex (no SIDE_CLEARANCE limit, the door is open)
+GAUGE_HOOK_THICKNESS = 5.0
+GAUGE_STANDOFF = 5.0  # leg's inner face in front of the door's front at the side edge
+GAUGE_LEG = 8.0  # the leg's outer face is the caliper's reference face
+GAUGE_STATIONS = (3.0, 8.0, 13.0, 18.0, 23.0)  # hole centres, in from the side edge
+GAUGE_HOLE = 5.0  # for the depth rod
+GAUGE_HOLE_HEIGHTS = (7.0, 16.0)  # z of the holes, alternating from station to station
+GAUGE_LEG_BEYOND = 5.0  # leg beyond the last station
+GAUGE_CORNER_RELIEF = 0.8  # radius cut from the hook's inside corner, for a sharp door edge
+# The wedge runs up along the edge (thick end down) between the door's front and
+# a seat sloped into the leg, right opposite the hook.
+WEDGE_SLOPE = 0.1  # seat and wedge: 1 mm of door thickness is 10 mm of wedge travel
+SEAT_TOP_DEPTH = 0.5  # the seat's depth in the leg at the gauge's top (a clean step, no feather edge)
+WEDGE_X = (0.5, 4.8)  # the wedge, in from the side edge
+WEDGE_SEAT_X = 5.2  # the seat runs from the side edge to here (not 5.5: the second hole would touch its end)
+WEDGE_RIB_X = 2.5  # only a rib from WEDGE_X[0] to here touches the door: opposite the hook
+WEDGE_RIB = 0.6  # the rib stands this proud
+WEDGE_TIP_Z = -6.0  # where the wedge's tip comes to rest on a door of DOOR_THICKNESS
+WEDGE_LENGTH = 45.0
