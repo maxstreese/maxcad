@@ -27,15 +27,19 @@
     // Updates `FOO_VERSION:` values in workflows that carry a
     // `# renovate: datasource=… depName=…` comment: Renovate's own version in
     // renovate.yml.
-    "customManagers:githubActionsVersions"
+    "customManagers:githubActionsVersions",
+
+    // No dashboard issue. Runs are started by the workflow, nightly or with
+    // `gh workflow run renovate.yml`, and the PRs are the record of what is
+    // pending. A run's warnings show only in its log.
+    //
+    // The preset, not the option: the option changed from a boolean to an
+    // object, and CI validates this file with nixpkgs' Renovate while the
+    // workflow runs another version, so either spelling fails in one of them.
+    ":disableDependencyDashboard"
   ],
 
   "timezone": "Europe/Berlin",
-
-  // Runs are started by the workflow, nightly or with
-  // `gh workflow run renovate.yml`, and the PRs are the record of what is
-  // pending. A run's warnings show only in its log.
-  "dependencyDashboard": false,
 
   // The nix manager is in beta and ships disabled; without this Renovate
   // never looks at flake.nix or flake.lock, silently.
