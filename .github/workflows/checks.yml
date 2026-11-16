@@ -34,7 +34,7 @@ jobs:
 
       # Pinning the action's SHA pins the installer script, not the Nix it
       # installs; install_url does that, the same Nix as maxi-me's CI.
-      - uses: cachix/install-nix-action@75c75c31ebece974e48ebc36b4ad125bd97bd97b # 31.11.3
+      - uses: cachix/install-nix-action@3dc140bfc76c49fbd4dd958429132e3746bcb086 # v31.11.5
         with:
           install_url: https://releases.nixos.org/nix/nix-2.34.8/install
           extra_nix_config: |
