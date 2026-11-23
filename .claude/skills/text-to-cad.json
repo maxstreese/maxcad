@@ -1,8 +1,8 @@
 {
   "source": "earthtojake/text-to-cad",
-  "release": "0.11.15",
+  "release": "0.11.16",
   "skills": {
-    "cad": "8351728a14217c832c4760eb89fac53a38e6770c7e4ff176162f1c8c1b7f360b",
-    "print3d": "19c3f2a8dd135b64c6057692b1420f01851bbf4811ef42dc53aadb21f37d8223"
+    "cad": "c46c4a008eaec5516df93b7d2b16a7512b6cd0641dd4e252e25db419f65c7d57",
+    "print3d": "eef2229005057b2994a1a16f4f6e6d5ff7cf38cb74e6f886322be915a5281326"
   }
 }
